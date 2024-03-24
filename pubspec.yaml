@@ -1,0 +1,112 @@
+name: headr
+description: A new Flutter project.
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.2 <4.0.0'
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.2
+  google_fonts: 6.1.0
+  responsive_sizer: ^3.2.0
+  rename: ^3.0.1
+  dio:
+
+
+  #Backend
+  get: ^4.6.6
+  firebase_core: ^2.14.0
+  firebase_auth: ^4.6.3
+  cloud_firestore: ^4.8.1
+  google_sign_in:
+  geolocator:
+  geocoding:
+  geocoder_plus: ^0.0.1
+
+  flutter_avif: ^2.1.1
+  flutter_image_compress: ^2.1.0
+  path_provider: ^2.1.2
+  imagekit_io: ^0.0.3
+  image_picker: ^1.0.7
+
+
+  uuid:
+  flutter_svg: ^2.0.10+1
+  fluttertoast: ^8.2.4
+  app_settings: ^4.2.0
+  intl: ^0.19.0
+  lottie:
+
+  #Optimization
+  cached_network_image: ^3.3.1
+  url_launcher:
+  connectivity_plus:
+  share_plus:
+  radio_group_v2: ^3.1.0
+  timeago: ^3.6.1
+  shared_preferences: ^2.2.2
+
+
+  #pagination
+  rxdart:
+  shimmer: ^3.0.0
+
+  #UI
+  dashed_circular_progress_bar: ^0.0.6
+  smooth_page_indicator: ^1.1.0
+  chips_choice: ^3.0.1
+  readmore: ^2.2.0
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.11.0
+  flutter_lints: ^2.0.0
+  envied_generator:
+  build_runner:
+
+  # For changing applicationId for the entire project
+  change_app_package_name: ^1.1.0
+
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/App Icon.png"
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/svg/
+    - assets/lottie/
