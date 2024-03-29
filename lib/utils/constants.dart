@@ -6,17 +6,22 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:headr/controllers/auth_controller.dart';
+import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../models/articles.dart';
 
 const String appLogo = 'assets/images/App Icon.png';
-const String noInternet = 'assets/lottie/90478-disconnect.json';
 const String profile = 'assets/svg/profile.svg';
 const String bookmark = 'assets/svg/bookmark.svg';
 const String bookmarkFilled = 'assets/svg/bookmark_filled.svg';
 const String url = 'assets/svg/url.svg';
 const String loginIcon = 'assets/svg/login_icon.svg';
+const String splashImage = 'assets/images/splash.png';
+const String onboarding1 = 'assets/images/o1.png';
+const String onboarding2 = 'assets/images/o2.png';
+const String onboarding3 = 'assets/images/o3.png';
+const String onboarding4 = 'assets/images/o4.png';
 
 /// Profile
 const String profileBackground = 'assets/svg/profile_background.svg';
@@ -30,6 +35,27 @@ const String termsIcon = 'assets/svg/terms.svg';
 const String logoutIcon = 'assets/svg/logout.svg';
 
 
+/// Lottie
+const String noInternet = 'assets/lottie/90478-disconnect.json';
+// const String loader = 'assets/lottie/news-nudge-loader.json';
+const String greenLoader = 'assets/lottie/green-loader.json';
+
+void showLoadingAnimation(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    barrierColor: Colors.black.withOpacity(0.75),
+    builder: (BuildContext context) {
+      var w = MediaQuery.of(context).size.width*0.5;
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(child: Lottie.asset(greenLoader,width: w,height: w),),
+        ],
+      );
+    },
+  );
+}
 
 void openReportBottomSheet(BuildContext context,Article article) {
   showModalBottomSheet(
@@ -135,6 +161,7 @@ void openSignUpBottomSheet(BuildContext context){
                     SizedBox(height: 3.h,),
                     GestureDetector(
                       onTap: () async{
+                        showLoadingAnimation(context);
                         await ac.googleSignIn();
                         // await GoogleSignIn().disconnect();
                       },

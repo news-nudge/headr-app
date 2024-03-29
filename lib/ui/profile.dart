@@ -6,10 +6,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:headr/controllers/auth_controller.dart';
+import 'package:headr/controllers/feed_controller.dart';
 import 'package:headr/controllers/profile_controller.dart';
+import 'package:headr/ui/profile/bookmarks_screen.dart';
+import 'package:headr/ui/profile/feedback_screen.dart';
+import 'package:headr/ui/profile/interests_screen.dart';
 import 'package:headr/utils/constants.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../widgets/widgets.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -20,14 +26,20 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
 
-  final ProfileController pc = Get.find();
+  final ProfileController pc = Get.put(ProfileController());
   final AuthController ac = Get.find();
+  final FeedController fc = Get.find();
+
+
+  final TextEditingController feedbackController = TextEditingController();
+  final FocusNode feedbackNode = FocusNode();
 
   bool notificationBool = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -60,7 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
 
               SizedBox(height: 4.h,),
-              if (pc.currentUser.value==null) Stack(
+              if (FirebaseAuth.instance.currentUser==null) Stack(
                 children: [
                   SvgPicture.asset(profileBackground,width: 100.w,height: 20.h,fit: BoxFit.cover,),
                   Padding(
@@ -132,7 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               buildProfileRows(context,newsInterestIcon,'News Interest',const Icon(Icons.chevron_right_rounded)),
               buildProfileRows(context,feedbackIcon,'Give Feedback',const Icon(Icons.chevron_right_rounded)),
               buildProfileRows(context,privacyPolicyIcon,'Privacy Policy',const Icon(Icons.chevron_right_rounded)),
-              buildProfileRows(context,termsIcon,'Terms & Conditions',const Icon(Icons.chevron_right_rounded)),
+              // buildProfileRows(context,termsIcon,'Terms & Conditions',const Icon(Icons.chevron_right_rounded)),
               buildProfileRows(context,logoutIcon,'Logout',const Icon(Icons.chevron_right_rounded)),
 
 
@@ -160,33 +172,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Column buildProfileRows(BuildContext context, String leadingIcon,String title, Widget trailing) {
+  Widget buildProfileRows(BuildContext context, String leadingIcon,String title, Widget trailing) {
     return Column(
               children: [
                 Divider(thickness: 1, color: Colors.grey.withOpacity(0.3),),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Opacity(
-                    opacity: loginCondition(context,title) == true
-                        ? 1
-                        : 0.5,
-                    child: GestureDetector(
-                      onTap: ()async{
-                        if(loginCondition(context, title) == true){
-                          if(title == 'Logout'){
-                            final SharedPreferences prefs = await SharedPreferences.getInstance();
+                InkWell(
+                  onTap: ()async{
+                    if(title == 'Logout'){
+                      if(loginCondition(context, title)==true){
+                        showLoadingAnimation(context);
+                        final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-                            await prefs.remove('feedPrefs');
-                            await GoogleSignIn().disconnect().then((value) async{
-                              await FirebaseAuth.instance.signOut();
-                            });
+                        await prefs.remove('feedPrefs');
+                        await GoogleSignIn().disconnect().then((value) async{
+                          await FirebaseAuth.instance.signOut();
+                        });
 
-                            successToast('Logged out from account');
-                          }
-                        }else{
-                          openSignUpBottomSheet(context);
-                        }
-                      },
+                        Get.back();
+                        successToast('Logged out from account');
+                      }else{
+                        openSignUpBottomSheet(context);
+                      }
+                    }else if(title == 'My Bookmarks'){
+                      if(loginCondition(context, title)==true){
+
+                        showLoadingAnimation(context);
+                        fc.bookmarks.value = await fc.fetchBookmarks();
+
+                        Get.back();
+                        Get.to(()=> const BookmarksScreen());
+                      }else{
+                        openSignUpBottomSheet(context);
+                      }
+                    }else if(title == 'News Interest'){
+                      if(loginCondition(context, title)==true){
+                        Get.to(()=> const InterestsScreen());
+                      }else{
+                        openSignUpBottomSheet(context);
+                      }
+                    }else if(title == 'Give Feedback'){
+                      Get.to(()=> FeedbackScreen());
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Opacity(
+                      opacity: loginCondition(context,title) == true
+                          ? 1
+                          : 0.5,
                       child: Row(
                         children: [
                           SvgPicture.asset(leadingIcon),

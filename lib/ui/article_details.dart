@@ -4,10 +4,13 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:headr/controllers/auth_controller.dart';
+import 'package:headr/controllers/feed_controller.dart';
 import 'package:headr/models/articles.dart';
 import 'package:headr/ui/profile.dart';
 import 'package:headr/utils/constants.dart';
@@ -27,13 +30,14 @@ class ArticleDetails extends StatefulWidget {
 class _ArticleDetailsState extends State<ArticleDetails> {
 
   final AuthController ac = Get.find();
+  final FeedController fc = Get.find();
 
   RxBool expandContent = false.obs;
   RxBool bookmarkBool = false.obs;
 
   void checkBookmarkStatus() async{
     if(ac.auth.currentUser!=null){
-
+      bookmarkBool.value = await fc.checkBookmarkStatus(widget.article.docId.toString());
     }
   }
 
@@ -178,17 +182,21 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                               ),
 
                               SizedBox(height: 2.h,),
-                              ReadMoreText(
-                                widget.article.articleContent.toString(),
-                                trimLines: 3,
-                                colorClickableText: Colors.white,
-                                trimMode: TrimMode.Line,
-                                trimCollapsedText: 'Read more',
-                                trimExpandedText: '...Read less',
-                                moreStyle: const TextStyle(
-                                    fontSize: 14, color: Colors.white),
-                                style: Get.textTheme.titleSmall!.copyWith(
-                                    color: Colors.white.withOpacity(0.5)
+                              SizedBox(
+                                height: 10.h,
+                                child: ReadMoreText(
+                                  widget.article.articleContent.toString(),
+                                  trimLines: 3,
+                                  colorClickableText: Colors.white,
+                                  trimMode: TrimMode.Line,
+                                  trimCollapsedText: 'Read more',
+                                  trimExpandedText: '...Read less',
+                                  moreStyle: const TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                      fontSize: 14, color: Colors.white),
+                                  style: Get.textTheme.titleSmall!.copyWith(
+                                      color: Colors.white.withOpacity(0.5),
+                                  ),
                                 ),
                               ),
                               SizedBox(height: 2.h,),
@@ -257,8 +265,23 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                             Obx(() {
                               if(bookmarkBool.value == false){
                                 return InkWell(
-                                  onTap: (){
-                                    bookmarkBool.value = true;
+                                  onTap: ()async{
+                                    if(ac.userExistence() == true){
+                                      await FirebaseFirestore.instance
+                                          .collection('users')
+                                          .doc(FirebaseAuth.instance.currentUser?.uid)
+                                          .collection('bookmarks')
+                                          .doc(widget.article.docId.toString()).set({
+                                        'articleDocId': widget.article.docId.toString(),
+                                        'articleImage': widget.article.articleImage.toString(),
+                                        'articleTitle': widget.article.articleTitle.toString(),
+                                        'source': widget.article.source.toString(),
+                                        'timestamp': DateTime.now().millisecondsSinceEpoch,
+                                      });
+                                      bookmarkBool.value = true;
+                                    }else{
+                                      openSignUpBottomSheet(context);
+                                    }
                                   },
                                   child: CircleAvatar(
                                     radius: 5.w,
@@ -267,9 +290,17 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                                   ),);
                               }else{
                                 return InkWell(
-                                  onTap: (){
-                                    bookmarkBool.value = false;
-                                  },
+                                  onTap: ()async{
+                                    if(ac.userExistence() == true){
+                                      await FirebaseFirestore.instance
+                                          .collection('users')
+                                          .doc(FirebaseAuth.instance.currentUser?.uid)
+                                          .collection('bookmarks')
+                                          .doc(widget.article.docId.toString()).delete();
+                                      bookmarkBool.value = false;
+                                    }else{
+                                      openSignUpBottomSheet(context);
+                                    }                                  },
                                   child: CircleAvatar(
                                     radius: 5.w,
                                     backgroundColor: Colors.transparent,

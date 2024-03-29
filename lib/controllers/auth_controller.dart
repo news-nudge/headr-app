@@ -8,6 +8,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:headr/controllers/profile_controller.dart';
 import 'package:headr/ui/auth/onboarding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -58,6 +59,7 @@ class AuthController extends GetxController{
     var prefsList = prefs.getStringList('feedPrefs');
     if(hasInternet.value ==true) {
       if(prefsList!=null && prefsList.isNotEmpty && googleBool.value == false){
+        log('Logged in via initialize app');
         Get.offAll(() => const HomeScreen());
       }else{
         Get.offAll(()=> const OnboardingScreen());
@@ -99,7 +101,7 @@ class AuthController extends GetxController{
 
   Future<void> googleSignIn()async{
 
-    // googleBool.value = true;
+    googleBool.value = true;
     /// Open interactive google accounts
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
@@ -114,25 +116,38 @@ class AuthController extends GetxController{
 
     return await FirebaseAuth.instance.signInWithCredential(credential).then((value) async{
 
+
       if (value.user != null) {
         ///Checking if the user Id already exists
         ///If yes: Then we direct the user to the drawer screen
         ///Else : We proceed to the on boarding section
         var userExists = await checkUserExistence(value.user!.uid);
         if (userExists) {
+          log('Logged in via google sign in function');
           Get.to(() => const HomeScreen());
         } else {
+
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          List<String>? prefsList = prefs.getStringList('feedPrefs');
+
+          List? finalPrefsList = prefsList?.cast<dynamic>();
+
           await FirebaseFirestore.instance.collection('users').doc(value.user!.uid).set({
             'docId' : value.user!.uid,
             'name' : value.user?.displayName.toString(),
             'userPic' : value.user?.photoURL.toString(),
             'userEmail' : value.user?.email.toString(),
-            'userPrefs' : [''],
+            'userPrefs' : finalPrefsList,
             'fcmToken' : '',
             'apnsToken' : '',
           }).then((value) {
+            // if(Get.isRegistered<ProfileController>() == true){
+            //   Get.delete<ProfileController>();
+            // }
             Future.delayed(const Duration(seconds: 1),(){
-              Get.offAll(()=> const HomeScreen());
+              Get.back();
+              log('Logged in via google sign in function');
+              Get.to(()=> const HomeScreen());
             });
           });
         }

@@ -980,10 +980,10 @@ packages:
     dependency: transitive
     description:
       name: logger
-      sha256: b3ff55aeb08d9d8901b767650285872cb1bb8f508373b3e348d60268b0c7f770
+      sha256: "8c94b8c219e7e50194efc8771cd0e9f10807d8d3e219af473d89b06cc2ee4e04"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "2.2.0"
   logging:
     dependency: transitive
     description:
@@ -1220,10 +1220,10 @@ packages:
     dependency: "direct main"
     description:
       name: responsive_sizer
-      sha256: ecc518f6f30faf28bdc15f94e13a6c53d38c1c202eec9b1d4c3d1843d143788e
+      sha256: "6aefee6065c0883681bc7559147a24d8fa1846d296a216abcda25ff349340712"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.0+1"
+    version: "3.3.1"
   rxdart:
     dependency: "direct main"
     description:
