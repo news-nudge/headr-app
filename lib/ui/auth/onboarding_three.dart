@@ -33,7 +33,7 @@ class OnboardingThree extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: 80.w,
-                    child: Text("You're all set to experience bite-sized news updates at your fingertips. Start exploring now and stay ahead with NewsNudge!",
+                    child: Text("You're all set to experience bite-sized news updates at your fingertips. Start exploring now and stay ahead with Headr!",
                       style: Get.textTheme.titleSmall!.copyWith(
                       ),),
                   ),

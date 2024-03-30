@@ -180,16 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onTap: ()async{
                     if(title == 'Logout'){
                       if(loginCondition(context, title)==true){
-                        showLoadingAnimation(context);
-                        final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-                        await prefs.remove('feedPrefs');
-                        await GoogleSignIn().disconnect().then((value) async{
-                          await FirebaseAuth.instance.signOut();
-                        });
-
-                        Get.back();
-                        successToast('Logged out from account');
+                        openLogoutBottomSheet(context);
                       }else{
                         openSignUpBottomSheet(context);
                       }
@@ -237,7 +228,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   bool loginCondition(BuildContext context,String title){
-    if(title == 'My Bookmarks' || title == 'Notifications' || title=='News Interest'){
+    if(title == 'My Bookmarks' || title == 'Notifications' || title=='News Interest' || title == 'Logout'){
       if(ac.userExistence() == true){
         return true;
       }else{

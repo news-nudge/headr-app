@@ -1,5 +1,6 @@
 
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,6 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:headr/controllers/auth_controller.dart';
 import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/articles.dart';
 
@@ -189,6 +191,100 @@ void openSignUpBottomSheet(BuildContext context){
             },
           ));
 }
+
+
+void openLogoutBottomSheet(BuildContext context){
+  showModalBottomSheet(
+      backgroundColor: Get.theme.scaffoldBackgroundColor,
+      isScrollControlled: true,
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      builder: (context) =>
+          DraggableScrollableSheet(
+            initialChildSize: 0.18,
+            maxChildSize: 0.7,
+            minChildSize: 0.15,
+            expand: false,
+            builder: (BuildContext context, ScrollController scrollController) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 24.0,right: 24,bottom: 16,top: 0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 30.w,
+                          height: 5,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(50)
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 3.h,),
+                      Text("Are you sure you want to logout?",style: Get.textTheme.titleMedium,),
+
+                      SizedBox(height: 3.h,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Get.back();
+                            },
+                            child: Container(
+                              width: 30.w,
+                              height: 6.h,
+                              decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(8)
+                              ),
+                              child: Center(
+                                child: Text("Go back",style: Get.textTheme.titleSmall!.copyWith(
+                                    fontWeight: FontWeight.bold
+                                ),),
+                              ),
+                            ),
+                          ),
+
+                          GestureDetector(
+                            onTap: () async{
+                              showLoadingAnimation(context);
+                              final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                              await prefs.remove('feedPrefs');
+                              await GoogleSignIn().disconnect().then((value) async{
+                                await FirebaseAuth.instance.signOut();
+                              });
+
+                              Get.back();
+                              successToast('Logged out from account');
+                            },
+                            child: Container(
+                              width: 30.w,
+                              height: 5.h,
+                              decoration: BoxDecoration(
+                                  color: Colors.redAccent,
+                                  borderRadius: BorderRadius.circular(8)
+                              ),
+                              child: Center(
+                                child: Text("Logout",style: Get.textTheme.titleSmall!.copyWith(
+                                    fontWeight: FontWeight.bold
+                                ),),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ]),
+              );
+            },
+          ));
+}
+
+
 
 
 

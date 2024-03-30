@@ -53,10 +53,10 @@ class LogoWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("News",style: Get.textTheme.titleLarge!.copyWith(
+            Text("Hea",style: Get.textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.bold
             ),),
-            Text("Nudge",style: Get.textTheme.titleLarge!.copyWith(
+            Text("dr",style: Get.textTheme.titleLarge!.copyWith(
               color: Get.theme.primaryColor,
               fontWeight: FontWeight.bold
             ),)

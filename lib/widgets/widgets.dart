@@ -10,7 +10,6 @@ import '../utils/constants.dart';
 class Widgets {
 
   static void buildFeedbackBottomSheet(BuildContext context,TextEditingController controller, FocusNode focusNode) {
-    final AuthController ac = Get.find();
     showModalBottomSheet(
       backgroundColor: Get.theme.scaffoldBackgroundColor,
       isScrollControlled: true,

@@ -21,7 +21,7 @@ class OnboardingOne extends StatelessWidget {
 
             Row(
               children: [
-                Text("Welcome to\nNewsNudge!",style: Get.textTheme.headlineMedium!.copyWith(
+                Text("Welcome to\nHeadr!",style: Get.textTheme.headlineMedium!.copyWith(
                   fontWeight: FontWeight.bold
                 ),),
               ],
@@ -32,7 +32,7 @@ class OnboardingOne extends StatelessWidget {
               children: [
                 SizedBox(
                   width: 80.w,
-                  child: Text("Stay informed with the latest news in just a few minutes. NewsNudge delivers concise summaries of top stories tailored to your interests.",
+                  child: Text("Stay informed with the latest news in just a few minutes. Headr delivers concise summaries of top stories tailored to your interests.",
                     style: Get.textTheme.titleSmall!.copyWith(
                   ),),
                 ),

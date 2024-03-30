@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         defaultTransition: Transition.rightToLeftWithFade,
         themeMode: ThemeMode.dark,
-        title: 'News Nudge',
+        title: 'Headr',
         theme: T1.darkTheme(),
         home: const SplashScreen(),
       );
