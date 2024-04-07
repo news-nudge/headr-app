@@ -67,6 +67,7 @@ dependencies:
   cached_network_image: ^3.3.1
   url_launcher:
   connectivity_plus:
+  firebase_dynamic_links: ^5.4.2
   share_plus:
   radio_group_v2: ^3.1.0
   timeago: ^3.6.1

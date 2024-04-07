@@ -141,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(height: 3.h,),
               buildProfileRows(context,bookmarkDone,'My Bookmarks',const Icon(Icons.chevron_right_rounded)),
               buildProfileRows(context,notificationIcon,'Notifications',buildNotificationSwitch(context)),
-              buildProfileRows(context,newsInterestIcon,'News Interest',const Icon(Icons.chevron_right_rounded)),
+              // buildProfileRows(context,newsInterestIcon,'News Interest',const Icon(Icons.chevron_right_rounded)),
               buildProfileRows(context,feedbackIcon,'Give Feedback',const Icon(Icons.chevron_right_rounded)),
               buildProfileRows(context,privacyPolicyIcon,'Privacy Policy',const Icon(Icons.chevron_right_rounded)),
               // buildProfileRows(context,termsIcon,'Terms & Conditions',const Icon(Icons.chevron_right_rounded)),

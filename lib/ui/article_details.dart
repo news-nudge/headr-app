@@ -6,6 +6,7 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,7 @@ import 'package:headr/ui/profile.dart';
 import 'package:headr/utils/constants.dart';
 import 'package:readmore/readmore.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -88,7 +90,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                         children: [
                           GestureDetector(
                             onTap: (){
-                              Get.to(()=> ProfileScreen());
+                              Get.to(()=> const ProfileScreen());
                             },
                             child: Container(
                               width: 10.w,
@@ -184,20 +186,32 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                               SizedBox(height: 2.h,),
                               SizedBox(
                                 height: 10.h,
-                                child: ReadMoreText(
+                                child: Text(
                                   widget.article.articleContent.toString(),
-                                  trimLines: 3,
-                                  colorClickableText: Colors.white,
-                                  trimMode: TrimMode.Line,
-                                  trimCollapsedText: 'Read more',
-                                  trimExpandedText: '...Read less',
-                                  moreStyle: const TextStyle(
+                                  style: TextStyle(
                                     overflow: TextOverflow.ellipsis,
-                                      fontSize: 14, color: Colors.white),
-                                  style: Get.textTheme.titleSmall!.copyWith(
-                                      color: Colors.white.withOpacity(0.5),
+                                    fontSize: 14,
+                                    color: Colors.white.withOpacity(0.5),
                                   ),
+                                  maxLines: 3,
                                 ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  GestureDetector(
+                                    onTap: ()async{
+                                      var url = Uri.parse(widget.article.articleUrl.toString());
+                                      if (!await launchUrl(url)) {
+                                        throw Exception('Could not launch $url');
+                                      }
+                                    },
+                                    child: const Text("Read more",style:  TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        fontSize: 14, color: Colors.white),
+                                    ),
+                                  )
+                                ],
                               ),
                               SizedBox(height: 2.h,),
                               Center(
@@ -286,7 +300,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                                   child: CircleAvatar(
                                     radius: 5.w,
                                     backgroundColor: Colors.transparent,
-                                    child: SvgPicture.asset(bookmark),
+                                    child: const Icon(Icons.thumb_up_alt_outlined),
                                   ),);
                               }else{
                                 return InkWell(
@@ -300,23 +314,24 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                                       bookmarkBool.value = false;
                                     }else{
                                       openSignUpBottomSheet(context);
-                                    }                                  },
+                                    }},
                                   child: CircleAvatar(
                                     radius: 5.w,
                                     backgroundColor: Colors.transparent,
-                                    child: SvgPicture.asset(bookmarkFilled),
+                                    child: Icon(Icons.thumb_up_off_alt_sharp,color: Get.theme.primaryColor,),
                                   ),);
                               }
                             }),
                             SizedBox(width: 5.w,),
                             InkWell(
                               onTap: ()async{
-                                var url = Uri.parse(widget.article.articleUrl.toString());
-                                if (!await launchUrl(url)) {
-                                  throw Exception('Could not launch $url');
-                                }
+                                // var url = Uri.parse(widget.article.articleUrl.toString());
+                                // if (!await launchUrl(url)) {
+                                //   throw Exception('Could not launch $url');
+                                // }
+                                await generateAndSharePostLink(widget.article);
                               },
-                              child: SvgPicture.asset(url),
+                              child: SvgPicture.asset(share),
                             ),
                           ],
                         )
@@ -332,5 +347,21 @@ class _ArticleDetailsState extends State<ArticleDetails> {
         )
       ],
     );
+  }
+
+  static generateAndSharePostLink(Article article) async{
+    var dynamicLinkParameters = DynamicLinkParameters(
+      link: Uri.parse("www.google.com/${article.docId}",),
+      uriPrefix: 'https://headr.page.link',
+      androidParameters: AndroidParameters(
+          packageName: 'com.usurper.headr',
+          fallbackUrl: Uri.parse('www.google.com')
+      ),
+    );
+
+    var link = await FirebaseDynamicLinks.instance.buildLink(dynamicLinkParameters);
+    log("Link : ${link.toString()}");
+
+    await  Share.share(link.toString(), subject: article.articleTitle.toString());
   }
 }
