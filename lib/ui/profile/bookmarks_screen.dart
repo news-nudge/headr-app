@@ -64,7 +64,8 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                   style: Get.textTheme.titleMedium,
                   keyboardType: TextInputType.name,
                   onChanged: (v) async {
-
+                    fc.searchedText.value = v;
+                    fc.searchList.value = await fc.searchBookmarks(v);
                   },
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
@@ -89,25 +90,27 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                         ),
                       ),
                     ),
-                    // suffixIcon: Obx(() {
-                    //   if (searchController.text == '') {
-                    //     return const SizedBox();
-                    //   } else {
-                    //     return GestureDetector(
-                    //         onTap: () {
-                    //
-                    //         },
-                    //         child: SizedBox(
-                    //             width: 15.w,
-                    //             height: 8.h,
-                    //             child: Center(
-                    //                 child: Text(
-                    //                   'clear',
-                    //                   style: Get.textTheme.titleSmall!
-                    //                       .copyWith(color: Colors.white70),
-                    //                 ))));
-                    //   }
-                    // }),
+                    suffixIcon: Obx(() {
+                      if (fc.searchedText.value == '') {
+                        return const SizedBox();
+                      } else {
+                        return GestureDetector(
+                            onTap: () {
+                              searchController.clear();
+                              fc.searchList.clear();
+                              fc.searchedText.value = '';
+                            },
+                            child: SizedBox(
+                                width: 15.w,
+                                height: 8.h,
+                                child: Center(
+                                    child: Text(
+                                      'clear',
+                                      style: Get.textTheme.titleSmall!
+                                          .copyWith(color: Colors.white70),
+                                    ))));
+                      }
+                    }),
                     hintText: "Search your bookmarks",
                     hintStyle:
                     Get.textTheme.titleMedium!.copyWith(color: Colors.white38),
@@ -127,63 +130,118 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
 
                 Obx(() {
                   if(fc.bookmarks.isNotEmpty){
-                    return ListView.builder(
-                      itemCount: fc.bookmarks.length,
-                      shrinkWrap: true,
-                      primary: false,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      itemBuilder: (context,index){
-                        Bookmark b = fc.bookmarks[index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Container(
-                            width: 100.w,
-                            height: 15.h,
-                            decoration: BoxDecoration(
-                                color: const Color.fromRGBO(46, 46, 48, 1),
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                // crossAxisAlignment: CrossAxisAlignment.s,
-                                children: [
-                                  Container(
-                                    width: 25.w,
-                                    height: 10.h,
-                                    decoration: BoxDecoration(
-                                        color: Colors.transparent,
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(
-                                            image: CachedNetworkImageProvider(
-                                              b.articleImage.toString(),
-                                            ),
-                                            fit: BoxFit.cover
-                                        )
+                    if(fc.searchList.isEmpty){
+                      return ListView.builder(
+                        itemCount: fc.bookmarks.length,
+                        shrinkWrap: true,
+                        primary: false,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        itemBuilder: (context,index){
+                          Bookmark b = fc.bookmarks[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Container(
+                              width: 100.w,
+                              height: 15.h,
+                              decoration: BoxDecoration(
+                                  color: const Color.fromRGBO(46, 46, 48, 1),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Row(
+                                  // crossAxisAlignment: CrossAxisAlignment.s,
+                                  children: [
+                                    Container(
+                                      width: 25.w,
+                                      height: 10.h,
+                                      decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          borderRadius: BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                              image: CachedNetworkImageProvider(
+                                                b.articleImage.toString(),
+                                              ),
+                                              fit: BoxFit.cover
+                                          )
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 4.w,),
-                                  SizedBox(
-                                    width: 40.w,
-                                    child: Text(b.articleTitle.toString(),style: Get.textTheme.titleSmall!.copyWith(
-                                        fontWeight: FontWeight.bold
-                                    ),maxLines: 4,overflow: TextOverflow.ellipsis,),
-                                  ),
-                                  const Spacer(),
-                                  BookmarkWidget(articleDocId: b.articleDocId.toString()),
-                                ],
+                                    SizedBox(width: 4.w,),
+                                    SizedBox(
+                                      width: 40.w,
+                                      child: Text(b.articleTitle.toString(),style: Get.textTheme.titleSmall!.copyWith(
+                                          fontWeight: FontWeight.bold
+                                      ),maxLines: 4,overflow: TextOverflow.ellipsis,),
+                                    ),
+                                    const Spacer(),
+                                    BookmarkWidget(articleDocId: b.articleDocId.toString()),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    );
+                          );
+                        },
+                      );
+                    }else{
+                      return ListView.builder(
+                        itemCount: fc.searchList.length,
+                        shrinkWrap: true,
+                        primary: false,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        itemBuilder: (context,index){
+                          Bookmark b = fc.searchList[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Container(
+                              width: 100.w,
+                              height: 15.h,
+                              decoration: BoxDecoration(
+                                  color: const Color.fromRGBO(46, 46, 48, 1),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Row(
+                                  // crossAxisAlignment: CrossAxisAlignment.s,
+                                  children: [
+                                    Container(
+                                      width: 25.w,
+                                      height: 10.h,
+                                      decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          borderRadius: BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                              image: CachedNetworkImageProvider(
+                                                b.articleImage.toString(),
+                                              ),
+                                              fit: BoxFit.cover
+                                          )
+                                      ),
+                                    ),
+                                    SizedBox(width: 4.w,),
+                                    SizedBox(
+                                      width: 40.w,
+                                      child: Text(b.articleTitle.toString(),style: Get.textTheme.titleSmall!.copyWith(
+                                          fontWeight: FontWeight.bold
+                                      ),maxLines: 4,overflow: TextOverflow.ellipsis,),
+                                    ),
+                                    const Spacer(),
+                                    BookmarkWidget(articleDocId: b.articleDocId.toString()),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
                   }else{
                     return SizedBox(
                       height: 60.h,
                       width: 100.w,
-                      child: Center(
+                      child: const Center(
                         child: Text('No bookmarks saved yet'),
                       ),
                     );

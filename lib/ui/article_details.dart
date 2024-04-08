@@ -45,27 +45,11 @@ class _ArticleDetailsState extends State<ArticleDetails> {
   }
 
 
-  // void callPaginationFunction() async{
-  //   List<Article> moreArticles = await fc.fetchMoreArticles();
-  //   for(var article in moreArticles){
-  //     if(fc.articles.contains(article)){
-  //       continue;
-  //     }else{
-  //       fc.articles.add(article);
-  //     }
-  //   }
-  //
-  //   for (var element in fc.articles) {
-  //     log('article : ${element.articleTitle}');
-  //   }
-  // }
-
 
   @override
   void initState() {
     super.initState();
     checkBookmarkStatus();
-    // callPaginationFunction();
   }
 
   @override

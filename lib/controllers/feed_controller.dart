@@ -17,8 +17,11 @@ class FeedController extends GetxController{
   RxList<Bookmark> bookmarks = RxList<Bookmark>();
 
   int oldDocumentArticlesListLength = -1;
-  int articlePaginationCount = 2;
+  int articlePaginationCount = 20;
   late DocumentSnapshot lastArticleDocument;
+
+  RxString searchedText = ''.obs;
+  RxList<Bookmark> searchList = RxList<Bookmark>();
 
   @override
   void onInit() async{
@@ -63,8 +66,6 @@ class FeedController extends GetxController{
       return result;
     });
 
-    // log('Articles Paginated length: ${articles.length}');
-    // log('last doc : ${lastArticleDocument.id}');
     return res;
   }
 
@@ -112,6 +113,21 @@ class FeedController extends GetxController{
     }else{
       return false;
     }
+  }
+
+  Future<List<Bookmark>> searchBookmarks(String input) async{
+    var res = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .collection('bookmarks')
+      .where('articleTitle',isGreaterThanOrEqualTo: input)
+      .get()
+      .then((value) {
+        var result = value.docs.map((e) => Bookmark.fromDocument(e)).toList();
+        return result;
+      });
+
+    return res;
   }
 
 }
