@@ -139,7 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
 
               SizedBox(height: 3.h,),
-              buildProfileRows(context,bookmarkDone,'My Bookmarks',const Icon(Icons.chevron_right_rounded)),
+              buildProfileRows(context,bookmarkDone,'Liked Articles',const Icon(Icons.chevron_right_rounded)),
               buildProfileRows(context,notificationIcon,'Notifications',buildNotificationSwitch(context)),
               // buildProfileRows(context,newsInterestIcon,'News Interest',const Icon(Icons.chevron_right_rounded)),
               buildProfileRows(context,feedbackIcon,'Give Feedback',const Icon(Icons.chevron_right_rounded)),
@@ -184,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       }else{
                         openSignUpBottomSheet(context);
                       }
-                    }else if(title == 'My Bookmarks'){
+                    }else if(title == 'Liked Articles'){
                       if(loginCondition(context, title)==true){
 
                         showLoadingAnimation(context);

@@ -51,7 +51,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                           child: const Center(child: Icon(Icons.chevron_left_rounded),),
                         ),
                       ),
-                      Text("Bookmarks",style: Get.textTheme.titleLarge,),
+                      Text("Liked Articles",style: Get.textTheme.titleLarge,),
                       SizedBox(width: 10.w,)
                     ],
                   ),

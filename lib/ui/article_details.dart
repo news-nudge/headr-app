@@ -23,7 +23,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ArticleDetails extends StatefulWidget {
   final Article article;
-  const ArticleDetails({super.key, required this.article});
+  final bool callPagination;
+  const ArticleDetails({super.key, required this.article, required this.callPagination});
 
   @override
   State<ArticleDetails> createState() => _ArticleDetailsState();
@@ -44,17 +45,33 @@ class _ArticleDetailsState extends State<ArticleDetails> {
   }
 
 
+  // void callPaginationFunction() async{
+  //   List<Article> moreArticles = await fc.fetchMoreArticles();
+  //   for(var article in moreArticles){
+  //     if(fc.articles.contains(article)){
+  //       continue;
+  //     }else{
+  //       fc.articles.add(article);
+  //     }
+  //   }
+  //
+  //   for (var element in fc.articles) {
+  //     log('article : ${element.articleTitle}');
+  //   }
+  // }
+
+
   @override
   void initState() {
     super.initState();
     checkBookmarkStatus();
+    // callPaginationFunction();
   }
 
   @override
   Widget build(BuildContext context) {
 
-    var updatedAt = DateTime.parse(widget.article.uploadedAt.toString());
-    log('time ${updatedAt.millisecondsSinceEpoch}');
+    var updatedAt = DateTime.fromMillisecondsSinceEpoch(widget.article.uploadedAt!);
     String updateTimeAgo = timeago.format(updatedAt,locale: 'en_short');
 
     return Stack(

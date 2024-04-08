@@ -8,7 +8,7 @@ class Article {
   String? articleAuthor;
   String? articleUrl;
   String? publishedAt;
-  String? uploadedAt;
+  int? uploadedAt;
   String? source;
   String? country;
   String? category;
