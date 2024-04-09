@@ -4,6 +4,9 @@ import 'dart:developer';
 
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:headr/controllers/auth_controller.dart';
 import 'package:headr/ui/home_screen.dart';
@@ -30,6 +33,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final ValueNotifier<double> _valueNotifier = ValueNotifier(90);
   final PageController _pageController = PageController(initialPage: 0);
+
 
   @override
   Widget build(BuildContext context) {

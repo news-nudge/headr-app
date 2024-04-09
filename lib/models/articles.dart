@@ -12,6 +12,7 @@ class Article {
   String? source;
   String? country;
   String? category;
+  String? video;
 
   Article(
       {this.docId,
@@ -24,7 +25,8 @@ class Article {
       this.uploadedAt,
       this.source,
       this.country,
-      this.category});
+      this.category,
+      this.video});
 
 
   factory Article.fromDocument(DocumentSnapshot<Map<String,dynamic>> snapshot){
@@ -42,6 +44,7 @@ class Article {
       source : d['source'],
       country : d['country'],
       category : d['category'],
+      video: d['video']
     );
   }
 

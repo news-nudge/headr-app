@@ -15,9 +15,10 @@ import 'package:headr/controllers/feed_controller.dart';
 import 'package:headr/models/articles.dart';
 import 'package:headr/ui/profile.dart';
 import 'package:headr/utils/constants.dart';
+import 'package:headr/widgets/video_player.dart';
 import 'package:readmore/readmore.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:share_plus/share_plus.dart';
+// import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -60,12 +61,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
 
     return Stack(
       children: [
-        CachedNetworkImage(
-          imageUrl: widget.article.articleImage.toString(),
-          width: 100.w,
-          height: 100.h,
-          fit: BoxFit.cover,
-        ),
+        buildAsset(),
         Column(
           children: [
             Container(
@@ -350,19 +346,35 @@ class _ArticleDetailsState extends State<ArticleDetails> {
     );
   }
 
+  Widget buildAsset() {
+    if(widget.article.video==''){
+      return CachedNetworkImage(
+        imageUrl: widget.article.articleImage.toString(),
+        width: 100.w,
+        height: 100.h,
+        fit: BoxFit.cover,
+      );
+    }else{
+      log('video string : ${widget.article.video}');
+      return Positioned(
+        top: 0,
+        child: VideoPlayerWidget(videoUrl: widget.article.video.toString(),));
+    }
+  }
+
   static generateAndSharePostLink(Article article) async{
     var dynamicLinkParameters = DynamicLinkParameters(
-      link: Uri.parse("www.google.com/${article.docId}",),
+      link: Uri.parse("https://www.google.com/${article.docId}",),
       uriPrefix: 'https://headr.page.link',
       androidParameters: AndroidParameters(
           packageName: 'com.usurper.headr',
-          fallbackUrl: Uri.parse('www.google.com')
+          fallbackUrl: Uri.parse('https://www.google.com/')
       ),
     );
 
     var link = await FirebaseDynamicLinks.instance.buildLink(dynamicLinkParameters);
     log("Link : ${link.toString()}");
 
-    await  Share.share(link.toString(), subject: article.articleTitle.toString());
+    // await  Share.share(link.toString(), subject: article.articleTitle.toString());
   }
 }
