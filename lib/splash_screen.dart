@@ -13,22 +13,22 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Image.asset(splashImage,width: 100.w,height: 100.h,),
-          Container(
-            width: 100.w,
-            height: 100.h,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [
-                      Colors.black.withOpacity(0.0),
-                      Colors.black
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter
-                )
-            ),
-          ),
-          LogoWidget(),
+          Image.asset(newSplash,width: 100.w,height: 100.h,),
+          // Container(
+          //   width: 100.w,
+          //   height: 100.h,
+          //   decoration: BoxDecoration(
+          //       gradient: LinearGradient(
+          //           colors: [
+          //             Colors.black.withOpacity(0.0),
+          //             Colors.black
+          //           ],
+          //           begin: Alignment.topCenter,
+          //           end: Alignment.bottomCenter
+          //       )
+          //   ),
+          // ),
+          // LogoWidget(),
         ],
       ),
     );

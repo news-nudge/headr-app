@@ -56,7 +56,7 @@ class _BookmarkWidgetState extends State<BookmarkWidget> {
           child: CircleAvatar(
             radius: 5.w,
             backgroundColor: Colors.transparent,
-            child: SvgPicture.asset(bookmark),
+            child: Icon(Icons.bookmark_border,),
           ),);
       }else{
         return InkWell(
@@ -73,7 +73,7 @@ class _BookmarkWidgetState extends State<BookmarkWidget> {
           child: CircleAvatar(
             radius: 5.w,
             backgroundColor: Colors.transparent,
-            child: SvgPicture.asset(bookmarkFilled),
+            child: Icon(Icons.bookmark,color: Get.theme.primaryColor,),
           ),);
       }
     });

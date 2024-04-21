@@ -13,12 +13,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/articles.dart';
 
-const String appLogo = 'assets/images/App Icon.png';
+const String appLogo = 'assets/images/new icon.png';
+const String newSplash = 'assets/images/new splash.png';
 const String profile = 'assets/svg/profile.svg';
 const String bookmark = 'assets/svg/bookmark.svg';
 const String bookmarkFilled = 'assets/svg/bookmark_filled.svg';
 const String share = 'assets/svg/url.svg';
-const String loginIcon = 'assets/svg/login_icon.svg';
+const String loginIcon = 'assets/svg/new login icon.svg';
 const String splashImage = 'assets/images/splash.png';
 const String onboarding1 = 'assets/images/o1.png';
 const String onboarding2 = 'assets/images/o2.png';
