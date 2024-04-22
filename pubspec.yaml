@@ -68,7 +68,7 @@ dependencies:
   url_launcher:
   connectivity_plus:
   firebase_dynamic_links: ^5.4.2
-#  share_plus:
+  share_link: ^0.2.0
   radio_group_v2: ^3.1.0
   timeago: ^3.6.1
   shared_preferences: ^2.2.2
@@ -106,7 +106,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/App Icon.png"
+  image_path: "assets/images/h_icon.png"
 
 flutter:
 

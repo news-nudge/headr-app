@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:headr/utils/constants.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -13,7 +14,7 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Image.asset(newSplash,width: 100.w,height: 100.h,),
+          SvgPicture.asset(newSplash,width: 100.w,height: 100.h,),
           // Container(
           //   width: 100.w,
           //   height: 100.h,

@@ -18,6 +18,8 @@ import 'package:headr/utils/constants.dart';
 import 'package:headr/widgets/video_player.dart';
 import 'package:readmore/readmore.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:share_link/share_link.dart';
+// import 'package:share_plus/share_plus.dart';
 // import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
@@ -35,6 +37,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
 
   final AuthController ac = Get.find();
   final FeedController fc = Get.find();
+
 
   RxBool expandContent = false.obs;
   RxBool bookmarkBool = false.obs;
@@ -55,6 +58,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final shareButtonKey = GlobalKey();
 
     var updatedAt = DateTime.fromMillisecondsSinceEpoch(widget.article.uploadedAt!);
     String updateTimeAgo = timeago.format(updatedAt,locale: 'en_short');
@@ -321,12 +325,15 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                             }),
                             SizedBox(width: 5.w,),
                             InkWell(
+                              key: shareButtonKey,
                               onTap: ()async{
-                                // var url = Uri.parse(widget.article.articleUrl.toString());
-                                // if (!await launchUrl(url)) {
-                                //   throw Exception('Could not launch $url');
-                                // }
+
                                 await generateAndSharePostLink(widget.article);
+
+                                // await Share.share(
+                                //     link.toString(),
+                                //     subject: widget.article.articleTitle.toString()
+                                // );
                               },
                               child: SvgPicture.asset(share),
                             ),
@@ -375,6 +382,11 @@ class _ArticleDetailsState extends State<ArticleDetails> {
     var link = await FirebaseDynamicLinks.instance.buildLink(dynamicLinkParameters);
     log("Link : ${link.toString()}");
 
-    // await  Share.share(link.toString(), subject: article.articleTitle.toString());
+    await ShareLink.shareUri(
+      link,
+      subject: article.articleTitle.toString(),
+      shareOrigin: Rect.largest,
+    );
+
   }
 }

@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/articles.dart';
 
 const String appLogo = 'assets/images/new icon.png';
-const String newSplash = 'assets/images/new splash.png';
+const String newSplash = 'assets/svg/new splash.svg';
 const String profile = 'assets/svg/profile.svg';
 const String bookmark = 'assets/svg/bookmark.svg';
 const String bookmarkFilled = 'assets/svg/bookmark_filled.svg';
