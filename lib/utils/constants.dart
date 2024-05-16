@@ -7,12 +7,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:headr/controllers/auth_controller.dart';
+import 'package:headr/ui/auth/admin_login.dart';
 import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/articles.dart';
 
+const String appIcon = 'assets/svg/icon_svg.svg';
 const String appLogo = 'assets/images/new icon.png';
 const String newSplash = 'assets/svg/new splash.svg';
 const String profile = 'assets/svg/profile.svg';
@@ -165,30 +167,49 @@ void openSignUpBottomSheet(BuildContext context){
                       ),
                     ),
                     SizedBox(height: 3.h,),
-                    GestureDetector(
-                      onTap: () async{
-                        showLoadingAnimation(context);
-                        await ac.googleSignIn();
-                        // await GoogleSignIn().disconnect();
-                      },
-                      child: Container(
-                        width: 70.w,
-                        height: 6.h,
-                        decoration: BoxDecoration(
-                          color: Get.theme.primaryColor,
-                          borderRadius: BorderRadius.circular(8)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () async{
+                            showLoadingAnimation(context);
+                            await ac.googleSignIn();
+                            // await GoogleSignIn().disconnect();
+                          },
+                          child: Container(
+                            width: 70.w,
+                            height: 6.h,
+                            decoration: BoxDecoration(
+                              color: Get.theme.primaryColor,
+                              borderRadius: BorderRadius.circular(8)
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(googleIcon),
+                                SizedBox(width: 3.w,),
+                                Text("Sign up with Google",style: Get.textTheme.titleSmall!.copyWith(
+                                  fontWeight: FontWeight.bold
+                                ),)
+                              ],
+                            ),
+                          ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(googleIcon),
-                            SizedBox(width: 3.w,),
-                            Text("Sign up with Google",style: Get.textTheme.titleSmall!.copyWith(
-                              fontWeight: FontWeight.bold
-                            ),)
-                          ],
-                        ),
-                      ),
+                        GestureDetector(
+                          onTap: (){
+                            Get.to(()=> const AdminLoginScreen());
+                          },
+                          child: Container(
+                            width: 15.w,
+                            height: 6.h,
+                            decoration: BoxDecoration(
+                              color: Get.theme.primaryColor,
+                              border: Border.all(color: Get.theme.primaryColor),
+                              borderRadius: BorderRadius.circular(8)
+                            ),
+                            child: const Icon(Icons.settings,color: Colors.white,),),
+                        )
+                      ],
                     )
                   ]),
               );
@@ -255,16 +276,24 @@ void openLogoutBottomSheet(BuildContext context){
 
                           GestureDetector(
                             onTap: () async{
-                              showLoadingAnimation(context);
-                              final SharedPreferences prefs = await SharedPreferences.getInstance();
+                              if(FirebaseAuth.instance.currentUser?.uid !='T2tUR82Lidhzax5OUYjjASq6A2y2'){
+                                showLoadingAnimation(context);
+                                final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-                              await prefs.remove('feedPrefs');
-                              await GoogleSignIn().disconnect().then((value) async{
+                                await prefs.remove('feedPrefs');
+                                await GoogleSignIn().disconnect().then((value) async{
+                                  await FirebaseAuth.instance.signOut();
+                                });
+
+                                Get.back();
+                                successToast('Logged out from account');
+                              }else{
+                                final SharedPreferences prefs = await SharedPreferences.getInstance();
+                                await prefs.remove('feedPrefs');
                                 await FirebaseAuth.instance.signOut();
-                              });
-
-                              Get.back();
-                              successToast('Logged out from account');
+                                Get.back();
+                                successToast('Logged out from account');
+                              }
                             },
                             child: Container(
                               width: 30.w,

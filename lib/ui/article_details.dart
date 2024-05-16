@@ -261,19 +261,34 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // Row(
+                        //   children: [
+                        //     Text("${widget.article.source}",style: Get.textTheme.titleSmall!.copyWith(
+                        //       color: Colors.white.withOpacity(0.5)
+                        //     ),),
+                        //     Text(" | ",style: Get.textTheme.titleSmall!.copyWith(
+                        //         color: Colors.white.withOpacity(0.5)
+                        //     )),
+                        //     Text('$updateTimeAgo ago',style: Get.textTheme.titleSmall!.copyWith(
+                        //         color: Colors.white.withOpacity(0.5)
+                        //     ))
+                        //   ],
+                        // ),
+
                         Row(
                           children: [
-                            Text("${widget.article.source}",style: Get.textTheme.titleSmall!.copyWith(
+                            Text("Headr",style: Get.textTheme.titleSmall!.copyWith(
                               color: Colors.white.withOpacity(0.5)
                             ),),
                             Text(" | ",style: Get.textTheme.titleSmall!.copyWith(
                                 color: Colors.white.withOpacity(0.5)
                             )),
-                            Text('$updateTimeAgo ago',style: Get.textTheme.titleSmall!.copyWith(
+                            Text('App',style: Get.textTheme.titleSmall!.copyWith(
                                 color: Colors.white.withOpacity(0.5)
                             ))
                           ],
                         ),
+
 
                         Row(
                           children: [

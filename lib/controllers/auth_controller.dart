@@ -6,10 +6,12 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:headr/controllers/profile_controller.dart';
 import 'package:headr/ui/auth/onboarding.dart';
+import 'package:headr/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
@@ -151,6 +153,26 @@ class AuthController extends GetxController{
             });
           });
         }
+      }
+    });
+  }
+
+
+  Future<void> anonymousLogin(BuildContext context,String email, String password) async{
+    googleBool.value = true;
+    showLoadingAnimation(context);
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    ).then((value) {
+
+      if(value.user!=null){
+        Get.back();
+        Get.to(()=> const HomeScreen());
+      }else{
+        Get.back();
+        log(value.toString());
+        errorToast('Login failed');
       }
     });
   }

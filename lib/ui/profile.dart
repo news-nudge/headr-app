@@ -14,6 +14,7 @@ import 'package:headr/ui/profile/interests_screen.dart';
 import 'package:headr/utils/constants.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../widgets/widgets.dart';
 
@@ -203,6 +204,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       }
                     }else if(title == 'Give Feedback'){
                       Get.to(()=> FeedbackScreen());
+                    }else if(title == 'Privacy Policy'){
+                      await launchUrlString('https://sites.google.com/view/headrapp/privacy-policy');
                     }
                   },
                   child: Padding(

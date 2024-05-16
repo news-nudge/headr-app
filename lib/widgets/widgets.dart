@@ -109,3 +109,84 @@ class Widgets {
   }
 
 }
+
+class CustomTextFormField extends StatelessWidget {
+  const CustomTextFormField({
+    super.key,
+    required this.hintText,
+    this.prefixIcon,
+    this.onChanged,
+    this.controller,
+    this.focusNode,
+    this.multiline = 1,
+    this.prefixBool = true,
+    this.suffix,
+    this.type = TextInputType.text,
+    required this.color,
+  });
+
+  final String hintText;
+  final Widget? prefixIcon;
+  final bool? prefixBool;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final int? multiline;
+  final Widget? suffix;
+  final void Function(String)? onChanged;
+  final Color color;
+  final TextInputType? type;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      onChanged: onChanged,
+      controller: controller,
+      focusNode: focusNode,
+      maxLines: multiline,
+      keyboardType: type,
+      style: Theme.of(context).textTheme.titleMedium,
+      decoration: InputDecoration(
+        // fillColor: const Color(0xff222222),
+        // filled: true,
+          hintText: hintText,
+          hintStyle: const TextStyle(color: Color(0xff767676)),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: color,
+                  width: 2
+              ),
+              borderRadius: BorderRadius.circular(8)
+          ),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: color,
+                  width: 2
+              ),
+              borderRadius: BorderRadius.circular(8)
+          ),
+          border: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: color,
+                  width: 2
+              ),
+              borderRadius: BorderRadius.circular(8)
+          ),
+          prefixIcon: prefixBool! ? IntrinsicHeight(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  prefixIcon!,
+                  const SizedBox(width: 5,),
+                  VerticalDivider(color: color)
+                ],
+              ),
+            ),
+          ) : null,
+
+          suffixIcon: suffix
+      ),
+    );
+  }
+}
