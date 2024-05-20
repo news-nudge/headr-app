@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:headr/controllers/auth_controller.dart';
 import 'package:headr/ui/auth/admin_login.dart';
+import 'package:headr/ui/report_article.dart';
 import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -106,7 +107,7 @@ void openReportBottomSheet(BuildContext context,Article article) {
                       SizedBox(height: 1.h,),
                       GestureDetector(
                           onTap: () {
-                            Navigator.pop(context);
+                            Get.to(()=> ReportArticle(article: article));
 
                           },
                           child: Row(

@@ -190,3 +190,59 @@ class CustomTextFormField extends StatelessWidget {
     );
   }
 }
+
+class HeadrBackButton extends StatelessWidget {
+  const HeadrBackButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){
+        Get.back();
+      },
+      child: Container(
+        width: 10.w,
+        height: 10.w,
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.white),
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.transparent
+        ),
+        child: const Center(child: Icon(Icons.chevron_left_rounded),),
+      ),
+    );
+  }
+}
+
+class HeadrButton extends StatelessWidget {
+  final String text;
+  final double width;
+
+  const HeadrButton({
+    super.key, required this.text, required this.width,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: width,
+        height: 6.h,
+        decoration: BoxDecoration(
+            color: Get.theme.primaryColor,
+            borderRadius: BorderRadius.circular(10)
+        ),
+        child: Center(
+          child: Text(text, style: Theme
+              .of(context)
+              .textTheme
+              .titleMedium!
+              .copyWith(
+              fontWeight: FontWeight.bold,
+              // letterSpacing: 1.1,
+              fontSize: 18
+          ),),)
+    );
+  }
+}
+
+
