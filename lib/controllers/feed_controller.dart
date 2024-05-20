@@ -34,6 +34,7 @@ class FeedController extends GetxController{
 
     var res = await FirebaseFirestore.instance
         .collection('articles')
+        .where('approved',isEqualTo: true)
         .orderBy('uploadedAt',descending: true)
         .limit(articlePaginationCount)
         .get()

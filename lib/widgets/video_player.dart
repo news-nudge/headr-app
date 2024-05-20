@@ -38,7 +38,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       child: FlickVideoPlayer(
         flickManager: flickManager,
         flickVideoWithControls: FlickVideoWithControls(
-            videoFit: BoxFit.contain,
+            videoFit: BoxFit.cover,
             playerLoadingFallback: const CircularProgressIndicator(color: Colors.deepPurple,),
             controls: Column(
               mainAxisAlignment: MainAxisAlignment.start,

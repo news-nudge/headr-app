@@ -6,9 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:headr/controllers/profile_controller.dart';
 import 'package:headr/models/articles.dart';
@@ -17,6 +14,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../controllers/feed_controller.dart';
 import '../utils/constants.dart';
+import '../utils/helpers.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     pageController = PageController(initialPage: 0);
     initDynamicLinks(context);
-    determinePosition();
+    callPosition();
     super.initState();
   }
 
@@ -54,107 +52,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  bool isLoadingAddress = false;
-  String location = '';
 
-  void determinePosition() async {
-    log("entered determine location");
-    setState(() {
-      isLoadingAddress = true;
-    });
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
-      await Geolocator.openLocationSettings().then((value) {
-        Geolocator.getCurrentPosition().then((position) {
-          getAddressFromLatLang(position);
-        });
-      });
-
-      Fluttertoast.showToast(
-          msg: "Location services are disabled.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      setState(() {
-        isLoadingAddress = false;
-      });
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        await Geolocator.openLocationSettings().then((value) {
-          Geolocator.getCurrentPosition().then((position) {
-            getAddressFromLatLang(position);
-          });
-        });
-        Fluttertoast.showToast(
-            msg: "Location permissions are denied",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-        setState(() {
-          isLoadingAddress = false;
-        });
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      await Geolocator.openLocationSettings().then((value) {
-        Geolocator.getCurrentPosition().then((position) {
-          getAddressFromLatLang(position);
-        });
-      });
-      Fluttertoast.showToast(
-          msg:
-          "Location permissions are permanently denied, we cannot request permissions.",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      setState(() {
-        isLoadingAddress = false;
-      });
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    Geolocator.getCurrentPosition().then((position) {
-      getAddressFromLatLang(position);
-    });
+  void callPosition() async{
+    String location = await Helpers.determineAddress();
+    uploadToAccount(location);
   }
 
-  Future<void> getAddressFromLatLang(Position position) async {
-    List<Placemark> placemark = await placemarkFromCoordinates(position.latitude, position.longitude,);
-    Placemark place = placemark[0];
-
-    location = '${place.locality}, ${place.country}, ${place.postalCode}';
-    isLoadingAddress = false;
-    log('location : $location');
-    uploadToAccount();
-
-  }
-
-  void uploadToAccount() async{
+  void uploadToAccount(String location) async{
     if(FirebaseAuth.instance.currentUser?.uid!=null){
       await FirebaseFirestore.instance
           .collection('users')
