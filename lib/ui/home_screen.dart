@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: pageController,
         itemCount: fc.articles.length,
         pageSnapping: true,
-        scrollDirection: Axis.horizontal,
+        scrollDirection: Axis.vertical,
         onPageChanged: (int index){
           if(index == fc.articles.length -1){
             callPaginationFunction();

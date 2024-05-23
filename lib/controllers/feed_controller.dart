@@ -27,6 +27,7 @@ class FeedController extends GetxController{
   void onInit() async{
     super.onInit();
     articles.value = await fetchArticles();
+    articles.shuffle();
   }
 
 
