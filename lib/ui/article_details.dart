@@ -19,8 +19,6 @@ import 'package:headr/widgets/video_player.dart';
 import 'package:readmore/readmore.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:share_link/share_link.dart';
-// import 'package:share_plus/share_plus.dart';
-// import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 

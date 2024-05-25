@@ -59,7 +59,7 @@ class ReportArticle extends StatelessWidget {
                       'articleId': article.docId.toString(),
                     }).then((value) {
                       Navigator.pop(context);
-                      successToast('Article has been reported');
+                      successToast('Content has been reported');
                     });
                   }
                 },
@@ -83,7 +83,7 @@ class ReportArticle extends StatelessWidget {
               ),
 
               SizedBox(height: 5.h,),
-              Text("Why are you reporting this article?",style: Get.textTheme.titleMedium!.copyWith(
+              Text("Why are you reporting this content?",style: Get.textTheme.titleMedium!.copyWith(
                   fontSize: 18,
                   fontWeight: FontWeight.bold
               ),),
