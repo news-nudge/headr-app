@@ -246,3 +246,59 @@ class HeadrButton extends StatelessWidget {
 }
 
 
+class BlackGradientContainer extends StatelessWidget {
+  final Widget child;
+  bool? expandBool;
+  BlackGradientContainer({super.key, required this.child,this.expandBool});
+
+  @override
+  Widget build(BuildContext context) {
+    if(expandBool == false){
+      return Container(
+        width: 100.w,
+        constraints: BoxConstraints(
+            minHeight: 30.h,
+            maxHeight: 65.h
+        ),
+        alignment: Alignment.bottomCenter,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(0),
+                  Colors.black.withOpacity(0.9),
+                  Colors.black.withOpacity(1),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter
+            )
+        ),
+        child: child,
+      );
+    }else{
+      return Container(
+        width: 100.w,
+        constraints: BoxConstraints(
+            minHeight: 30.h,
+            maxHeight: 87.h
+        ),
+        alignment: Alignment.bottomCenter,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(0),
+                  Colors.black.withOpacity(0.7),
+                  Colors.black.withOpacity(0.8),
+                  Colors.black.withOpacity(0.9),
+                  Colors.black.withOpacity(1),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter
+            )
+        ),
+        child: child,
+      );
+    }
+  }
+}
+
+

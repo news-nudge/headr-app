@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -98,21 +99,38 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.bold
                 ),),
                 const Spacer(),
-                GestureDetector(
-                  onTap: (){
-                    Get.to(()=> const ProfileScreen());
-                  },
-                  child: Container(
-                    width: 8.w,
-                    height: 8.w,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.transparent
-                    ),
-                    child: Center(child: SvgPicture.asset(profile,width: 5.w,),),
-                  ),
-                ),
+                Obx(() {
+                  if(pc.currentUser.value == null){
+                    return GestureDetector(
+                      onTap: (){
+                        Get.to(()=> const ProfileScreen());
+                      },
+                      child: Container(
+                        width: 8.w,
+                        height: 8.w,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.transparent
+                        ),
+                        child: Center(child: SvgPicture.asset(profile,width: 5.w,),),
+                      ),
+                    );
+                  }else{
+                    return GestureDetector(
+                      onTap: (){
+                        Get.to(()=> const ProfileScreen());
+                      },
+                      child: CircleAvatar(
+                        radius: 4.w,
+                        backgroundColor: Colors.transparent,
+                        backgroundImage: CachedNetworkImageProvider(
+                          pc.currentUser.value!.userPic.toString(),
+                        ),
+                      ),
+                    );
+                  }
+                })
               ],
             ),
           ),
@@ -121,26 +139,26 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Obx(() {
         return PageView.builder(
-        controller: pageController,
-        itemCount: fc.articles.length,
-        pageSnapping: true,
-        scrollDirection: Axis.vertical,
-        onPageChanged: (int index){
-          if(index == fc.articles.length -1){
-            callPaginationFunction();
-          }
-        },
-        itemBuilder: (context,index){
-          if(fc.articles.isEmpty){
-            return SizedBox(width: 100.w,height: 100.h,child: const Center(child: Text("Loading..."),),);
-          }else{
-            if(index == fc.articles.length - 1){
-              return ArticleDetails(article: fc.articles[index],callPagination: true,);
-            }else{
-              return ArticleDetails(article: fc.articles[index],callPagination: false,);
+          controller: pageController,
+          itemCount: fc.articles.length,
+          pageSnapping: true,
+          scrollDirection: Axis.vertical,
+          onPageChanged: (int index){
+            if(index == fc.articles.length -1){
+              callPaginationFunction();
             }
-          }
-        },
+          },
+          itemBuilder: (context,index){
+            if(fc.articles.isEmpty){
+              return SizedBox(width: 100.w,height: 100.h,child: const Center(child: Text("Loading..."),),);
+            }else{
+              if(index == fc.articles.length - 1){
+                return ArticleDetails(article: fc.articles[index],callPagination: true,);
+              }else{
+                return ArticleDetails(article: fc.articles[index],callPagination: false,);
+              }
+            }
+          },
       );
       },)
     );

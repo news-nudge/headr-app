@@ -23,6 +23,9 @@ class FeedController extends GetxController{
   RxString searchedText = ''.obs;
   RxList<Bookmark> searchList = RxList<Bookmark>();
 
+  RxBool showTopStack = true.obs;
+  RxBool containerExpandBool = false.obs;
+
   @override
   void onInit() async{
     super.onInit();

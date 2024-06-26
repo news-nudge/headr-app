@@ -17,6 +17,7 @@ import 'package:headr/models/articles.dart';
 import 'package:headr/ui/profile.dart';
 import 'package:headr/utils/constants.dart';
 import 'package:headr/widgets/video_player.dart';
+import 'package:headr/widgets/widgets.dart';
 import 'package:readmore/readmore.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:share_link/share_link.dart';
@@ -59,292 +60,248 @@ class _ArticleDetailsState extends State<ArticleDetails> {
   Widget build(BuildContext context) {
     final shareButtonKey = GlobalKey();
 
-    var updatedAt = DateTime.fromMillisecondsSinceEpoch(widget.article.uploadedAt!);
-    String updateTimeAgo = timeago.format(updatedAt,locale: 'en_short');
-
     return Material(
       color: Get.theme.scaffoldBackgroundColor,
       child: Stack(
         children: [
           buildAsset(),
-          Column(
-            children: [
-              // Container(
-              //   width: 100.w,
-              //   // height: 25.h,
-              //   decoration: BoxDecoration(
-              //       gradient: LinearGradient(
-              //           colors: [
-              //             Colors.black.withOpacity(0.7),
-              //             Colors.black.withOpacity(0)
-              //           ],
-              //           begin: Alignment.topCenter,
-              //           end: Alignment.bottomCenter
-              //       )
-              //   ),
-              //   child: SafeArea(
-              //     child: Padding(
-              //       padding: const EdgeInsets.all(16.0),
-              //       child: Column(
-              //         children: [
-              //           Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //             children: [
-              //               GestureDetector(
-              //                 onTap: (){
-              //                   Get.to(()=> const ProfileScreen());
-              //                 },
-              //                 child: Container(
-              //                   width: 10.w,
-              //                   height: 10.w,
-              //                   decoration: BoxDecoration(
-              //                     border: Border.all(color: Colors.white),
-              //                     borderRadius: BorderRadius.circular(10),
-              //                     color: Colors.transparent
-              //                   ),
-              //                   child: Center(child: SvgPicture.asset(profile),),
-              //                 ),
-              //               ),
-              //               GestureDetector(
-              //                 onTap: (){
-              //                   openReportBottomSheet(context, widget.article);
-              //                 },
-              //                 child: Container(
-              //                   width: 10.w,
-              //                   height: 10.w,
-              //                   decoration: BoxDecoration(
-              //                     border: Border.all(color: Colors.white),
-              //                     borderRadius: BorderRadius.circular(10),
-              //                     color: Colors.transparent
-              //                   ),
-              //                   child: const Center(child: Icon(Icons.more_vert),),
-              //                 ),
-              //               ),
-              //             ],
-              //           ),
-              //           SizedBox(height: 10.h,),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              const Spacer(),
-              Container(
-                width: 100.w,
-                constraints: BoxConstraints(
-                  minHeight: 30.h,
-                  maxHeight: 65.h
-                ),
-                alignment: Alignment.bottomCenter,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [
-                          Colors.black.withOpacity(0),
-                          Colors.black.withOpacity(0.9),
-                          Colors.black.withOpacity(1),
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter
-                    )
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      // SizedBox(height: 20.h,),
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 1.w,
-                            backgroundColor: Colors.white.withOpacity(0.8),
+          Obx(() {
+            return Column(
+              children: [
+                const Spacer(),
+                BlackGradientContainer(
+                  expandBool: fc.containerExpandBool.value,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        // SizedBox(height: 20.h,),
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 1.w,
+                              backgroundColor: Colors.white.withOpacity(0.8),
+                            ),
+                            SizedBox(width: 3.w,),
+                            Text(widget.article.category.toString(),style: Get.textTheme.titleMedium,)
+                          ],
+                        ),
+
+                        SizedBox(height: 2.h,),
+
+                        // Obx(() {
+                        //   if(expandContent.value == true){
+                        //     return GestureDetector(
+                        //       onTap: (){
+                        //         expandContent.value = !expandContent.value;
+                        //       },
+                        //       child: Column(
+                        //         children: [
+                        //           Row(
+                        //             children: [
+                        //               SizedBox(
+                        //                 width: 85.w,
+                        //                 child: Text(widget.article.articleTitle.toString(),
+                        //                   style: Get.textTheme.headlineSmall!.copyWith(
+                        //                       fontWeight: FontWeight.bold
+                        //                   ),
+                        //                   textAlign: TextAlign.left,
+                        //                   maxLines: 4,
+                        //                   overflow: TextOverflow.ellipsis,
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //
+                        //           SizedBox(height: 2.h,),
+                        //           ReadMoreText(
+                        //             widget.article.articleContent.toString(),
+                        //             trimMode: TrimMode.Line,
+                        //             trimLines: 2,
+                        //             colorClickableText: Colors.white,
+                        //             trimCollapsedText: 'Read more',
+                        //             trimExpandedText: ' Read less',
+                        //             moreStyle: TextStyle(
+                        //               fontSize: 14,
+                        //               color: Colors.white.withOpacity(.5)
+                        //             ),
+                        //           ),
+                        //           SizedBox(height: 2.h,),
+                        //           Center(
+                        //             child: RotatedBox(
+                        //               quarterTurns: 2,
+                        //               child: Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.white.withOpacity(0.5),),),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     );
+                        //   }else{
+                        //     return GestureDetector(
+                        //       onTap: (){
+                        //         expandContent.value = !expandContent.value;
+                        //       },
+                        //       child: Column(
+                        //         children: [
+                        //           Row(
+                        //             children: [
+                        //               SizedBox(
+                        //                 width: 85.w,
+                        //                 child: Text(widget.article.articleTitle.toString(),
+                        //                   style: Get.textTheme.headlineSmall!.copyWith(
+                        //                       fontWeight: FontWeight.bold
+                        //                   ),
+                        //                   textAlign: TextAlign.left,
+                        //                   maxLines: 4,
+                        //                   overflow: TextOverflow.ellipsis,
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //
+                        //           SizedBox(height: 2.h,),
+                        //           Center(
+                        //             child: Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.white.withOpacity(0.5),),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     );
+                        //   }
+                        // }),
+
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 85.w,
+                              child: Text(widget.article.articleTitle.toString(),
+                                style: Get.textTheme.headlineSmall!.copyWith(
+                                    fontWeight: FontWeight.bold
+                                ),
+                                textAlign: TextAlign.left,
+                                maxLines: 4,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 2.h,),
+                        ReadMoreText(
+                          widget.article.articleContent.toString(),
+                          trimMode: TrimMode.Line,
+                          trimLines: 2,
+                          colorClickableText: Colors.white,
+                          trimCollapsedText: 'Read more',
+                          trimExpandedText: ' Read less',
+                          callback: (bool expand){
+                            fc.containerExpandBool.value = !fc.containerExpandBool.value;
+                          },
+                          moreStyle: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white.withOpacity(.5)
                           ),
-                          SizedBox(width: 3.w,),
-                          Text(widget.article.category.toString(),style: Get.textTheme.titleMedium,)
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 4.h,),
 
-                      SizedBox(height: 2.h,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
 
-                      Obx(() {
-                        if(expandContent.value == true){
-                          return GestureDetector(
-                            onTap: (){
-                              expandContent.value = !expandContent.value;
-                            },
-                            child: Column(
+                            Row(
                               children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 85.w,
-                                      child: Text(widget.article.articleTitle.toString(),
-                                        style: Get.textTheme.headlineSmall!.copyWith(
-                                            fontWeight: FontWeight.bold
-                                        ),
-                                        textAlign: TextAlign.left,
-                                        maxLines: 4,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                SizedBox(height: 2.h,),
-                                ReadMoreText(
-                                  widget.article.articleContent.toString(),
-                                  trimMode: TrimMode.Line,
-                                  trimLines: 2,
-                                  colorClickableText: Colors.white,
-                                  trimCollapsedText: 'Read more',
-                                  trimExpandedText: ' Read less',
-                                  moreStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white.withOpacity(.5)
-                                  ),
-                                ),
-                                SizedBox(height: 2.h,),
-                                Center(
-                                  child: RotatedBox(
-                                    quarterTurns: 2,
-                                    child: Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.white.withOpacity(0.5),),),
-                                ),
+                                Text("Headr",style: Get.textTheme.titleSmall!.copyWith(
+                                    color: Colors.white.withOpacity(0.5)
+                                ),),
+                                Text(" | ",style: Get.textTheme.titleSmall!.copyWith(
+                                    color: Colors.white.withOpacity(0.5)
+                                )),
+                                Text('App',style: Get.textTheme.titleSmall!.copyWith(
+                                    color: Colors.white.withOpacity(0.5)
+                                ))
                               ],
                             ),
-                          );
-                        }else{
-                          return GestureDetector(
-                            onTap: (){
-                              expandContent.value = !expandContent.value;
-                            },
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 85.w,
-                                      child: Text(widget.article.articleTitle.toString(),
-                                        style: Get.textTheme.headlineSmall!.copyWith(
-                                            fontWeight: FontWeight.bold
-                                        ),
-                                        textAlign: TextAlign.left,
-                                        maxLines: 4,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
-                                ),
 
-                                SizedBox(height: 2.h,),
-                                Center(
-                                  child: Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.white.withOpacity(0.5),),
+
+                            Row(
+                              children: [
+
+                                GestureDetector(
+                                  child: const Icon(Icons.more_vert,),
+                                  onTap: (){
+                                    openReportBottomSheet(context, widget.article);
+                                  },
+                                ),
+                                SizedBox(width: 5.w,),
+                                Obx(() {
+                                  if(bookmarkBool.value == false){
+                                    return GestureDetector(
+                                      onTap: ()async{
+                                        if(ac.userExistence() == true){
+                                          await FirebaseFirestore.instance
+                                              .collection('users')
+                                              .doc(FirebaseAuth.instance.currentUser?.uid)
+                                              .collection('bookmarks')
+                                              .doc(widget.article.docId.toString()).set({
+                                            'articleDocId': widget.article.docId.toString(),
+                                            'articleImage': widget.article.articleImage.toString(),
+                                            'articleTitle': widget.article.articleTitle.toString(),
+                                            'source': widget.article.source.toString(),
+                                            'timestamp': DateTime.now().millisecondsSinceEpoch,
+                                          });
+                                          bookmarkBool.value = true;
+                                        }else{
+                                          openSignUpBottomSheet(context);
+                                        }
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 5.w,
+                                        backgroundColor: Colors.transparent,
+                                        child: const Icon(Icons.favorite_border_rounded,color: Colors.white,),
+                                      ),);
+                                  }else{
+                                    return GestureDetector(
+                                      onTap: ()async{
+                                        if(ac.userExistence() == true){
+                                          await FirebaseFirestore.instance
+                                              .collection('users')
+                                              .doc(FirebaseAuth.instance.currentUser?.uid)
+                                              .collection('bookmarks')
+                                              .doc(widget.article.docId.toString()).delete();
+                                          bookmarkBool.value = false;
+                                        }else{
+                                          openSignUpBottomSheet(context);
+                                        }},
+                                      child: CircleAvatar(
+                                        radius: 5.w,
+                                        backgroundColor: Colors.transparent,
+                                        child: Icon(Icons.favorite_rounded,color: Get.theme.primaryColor,),
+                                      ),);
+                                  }
+                                }),
+                                SizedBox(width: 7.w,),
+                                GestureDetector(
+                                  key: shareButtonKey,
+                                  onTap: ()async{
+
+                                    await generateAndSharePostLink(widget.article);
+                                  },
+                                  child: Transform.rotate(
+                                      angle: -pi/6,
+                                      child: const Icon(Icons.send)),
                                 ),
                               ],
-                            ),
-                          );
-                        }
-                      }),
+                            )
+                          ],
+                        ),
 
-                      SizedBox(height: 4.h,),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-
-                          Row(
-                            children: [
-                              Text("Headr",style: Get.textTheme.titleSmall!.copyWith(
-                                color: Colors.white.withOpacity(0.5)
-                              ),),
-                              Text(" | ",style: Get.textTheme.titleSmall!.copyWith(
-                                  color: Colors.white.withOpacity(0.5)
-                              )),
-                              Text('App',style: Get.textTheme.titleSmall!.copyWith(
-                                  color: Colors.white.withOpacity(0.5)
-                              ))
-                            ],
-                          ),
-
-
-                          Row(
-                            children: [
-
-                              GestureDetector(
-                                child: const Icon(Icons.more_vert,),
-                                onTap: (){
-                                  openReportBottomSheet(context, widget.article);
-                                },
-                              ),
-                              SizedBox(width: 5.w,),
-                              Obx(() {
-                                if(bookmarkBool.value == false){
-                                  return GestureDetector(
-                                    onTap: ()async{
-                                      if(ac.userExistence() == true){
-                                        await FirebaseFirestore.instance
-                                            .collection('users')
-                                            .doc(FirebaseAuth.instance.currentUser?.uid)
-                                            .collection('bookmarks')
-                                            .doc(widget.article.docId.toString()).set({
-                                          'articleDocId': widget.article.docId.toString(),
-                                          'articleImage': widget.article.articleImage.toString(),
-                                          'articleTitle': widget.article.articleTitle.toString(),
-                                          'source': widget.article.source.toString(),
-                                          'timestamp': DateTime.now().millisecondsSinceEpoch,
-                                        });
-                                        bookmarkBool.value = true;
-                                      }else{
-                                        openSignUpBottomSheet(context);
-                                      }
-                                    },
-                                    child: CircleAvatar(
-                                      radius: 5.w,
-                                      backgroundColor: Colors.transparent,
-                                      child: const Icon(Icons.favorite_border_rounded,color: Colors.white,),
-                                    ),);
-                                }else{
-                                  return GestureDetector(
-                                    onTap: ()async{
-                                      if(ac.userExistence() == true){
-                                        await FirebaseFirestore.instance
-                                            .collection('users')
-                                            .doc(FirebaseAuth.instance.currentUser?.uid)
-                                            .collection('bookmarks')
-                                            .doc(widget.article.docId.toString()).delete();
-                                        bookmarkBool.value = false;
-                                      }else{
-                                        openSignUpBottomSheet(context);
-                                      }},
-                                    child: CircleAvatar(
-                                      radius: 5.w,
-                                      backgroundColor: Colors.transparent,
-                                      child: Icon(Icons.favorite_rounded,color: Get.theme.primaryColor,),
-                                    ),);
-                                }
-                              }),
-                              SizedBox(width: 7.w,),
-                              GestureDetector(
-                                key: shareButtonKey,
-                                onTap: ()async{
-
-                                  await generateAndSharePostLink(widget.article);
-                                },
-                                child: Transform.rotate(
-                                    angle: -pi/6,
-                                    child: const Icon(Icons.send)),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-
-                      SizedBox(height: 2.h,),
-                    ],
+                        SizedBox(height: 2.h,),
+                      ],
+                    ),
                   ),
                 ),
-              )
-            ],
-          )
+              ],
+            );
+          },)
         ],
       ),
     );
