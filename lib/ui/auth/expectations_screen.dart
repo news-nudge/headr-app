@@ -42,15 +42,25 @@ class _ExpectationScreenState extends State<ExpectationScreen> {
               children: [
                 Row(
                   children: [
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(appLogo,width: 10.w,height: 10.w,)),
+                    Container(
+                      width: 10.w,
+                      height: 10.w,
+                      decoration: BoxDecoration(
+                          color: Get.theme.primaryColor,
+                          borderRadius: BorderRadius.circular(10)
+                      ),
+                      child: Center(
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(headrIcon,width: 7.w,height: 7.w,)),
+                      ),
+                    ),
                     SizedBox(width: 3.w,),
                     Text("Hea",style: Get.textTheme.titleLarge!.copyWith(
                         fontWeight: FontWeight.bold
                     ),),
                     Text("dr",style: Get.textTheme.titleLarge!.copyWith(
-                        color: Get.theme.primaryColor,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold
                     ),)
                   ],

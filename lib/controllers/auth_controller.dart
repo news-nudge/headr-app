@@ -26,6 +26,8 @@ class AuthController extends GetxController{
   FirebaseAuth auth = FirebaseAuth.instance;
   RxList<String> feedPreferences = RxList<String>();
 
+  RxBool signingLoader = false.obs;
+
   /// Internet
   late StreamSubscription subscription;
   RxBool hasInternet = false.obs;
@@ -60,11 +62,13 @@ class AuthController extends GetxController{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var prefsList = prefs.getStringList('feedPrefs');
     if(hasInternet.value ==true) {
-      if(prefsList!=null && prefsList.isNotEmpty && googleBool.value == false){
+      if(googleBool.value == false && prefsList!=null && prefsList.isNotEmpty ){
         log('Logged in via initialize app');
         Get.offAll(() => const HomeScreen());
       }else{
-        Get.offAll(()=> const OnboardingScreen());
+        if(googleBool.value == false){
+          Get.offAll(()=> const OnboardingScreen());
+        }
       }
     }
   }
@@ -126,7 +130,8 @@ class AuthController extends GetxController{
         var userExists = await checkUserExistence(value.user!.uid);
         if (userExists) {
           log('Logged in via google sign in function');
-          Get.to(() => const HomeScreen());
+          googleBool.value = false;
+          Get.offAll(() => const HomeScreen());
         } else {
 
           final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -149,6 +154,7 @@ class AuthController extends GetxController{
             Future.delayed(const Duration(seconds: 1),(){
               Get.back();
               log('Logged in via google sign in function');
+              googleBool.value = false;
               Get.to(()=> const HomeScreen());
             });
           });
@@ -168,6 +174,7 @@ class AuthController extends GetxController{
 
       if(value.user!=null){
         Get.back();
+        googleBool.value = false;
         Get.to(()=> const HomeScreen());
       }else{
         Get.back();

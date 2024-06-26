@@ -6,10 +6,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:headr/controllers/profile_controller.dart';
 import 'package:headr/models/articles.dart';
 import 'package:headr/ui/article_details.dart';
+import 'package:headr/ui/profile.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../controllers/feed_controller.dart';
@@ -74,8 +76,49 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      extendBody: true,
+      extendBodyBehindAppBar: false,
+      extendBody: false,
+      appBar: PreferredSize(
+        preferredSize: Size(100.w, 40.h),
+        child: Container(
+          width: 100.w,
+          height: 11.h,
+          alignment: Alignment.bottomLeft,
+          decoration: const BoxDecoration(
+            color: Colors.black
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                const Icon(Icons.menu,size: 28,color: Colors.white,),
+                SizedBox(width: 5.w,),
+                Text("Headr",style: Get.textTheme.titleLarge!.copyWith(
+                    fontWeight: FontWeight.bold
+                ),),
+                const Spacer(),
+                GestureDetector(
+                  onTap: (){
+                    Get.to(()=> const ProfileScreen());
+                  },
+                  child: Container(
+                    width: 8.w,
+                    height: 8.w,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.transparent
+                    ),
+                    child: Center(child: SvgPicture.asset(profile,width: 5.w,),),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+      ),
       body: Obx(() {
         return PageView.builder(
         controller: pageController,

@@ -1,7 +1,8 @@
 
 
 
-import 'dart:developer';
+import 'dart:developer' as dev;
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -62,76 +63,77 @@ class _ArticleDetailsState extends State<ArticleDetails> {
     String updateTimeAgo = timeago.format(updatedAt,locale: 'en_short');
 
     return Material(
+      color: Get.theme.scaffoldBackgroundColor,
       child: Stack(
         children: [
           buildAsset(),
           Column(
             children: [
-              Container(
-                width: 100.w,
-                // height: 25.h,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [
-                          Colors.black.withOpacity(0.7),
-                          Colors.black.withOpacity(0)
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter
-                    )
-                ),
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: (){
-                                Get.to(()=> const ProfileScreen());
-                              },
-                              child: Container(
-                                width: 10.w,
-                                height: 10.w,
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.transparent
-                                ),
-                                child: Center(child: SvgPicture.asset(profile),),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: (){
-                                openReportBottomSheet(context, widget.article);
-                              },
-                              child: Container(
-                                width: 10.w,
-                                height: 10.w,
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.transparent
-                                ),
-                                child: const Center(child: Icon(Icons.more_vert),),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10.h,),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              // Container(
+              //   width: 100.w,
+              //   // height: 25.h,
+              //   decoration: BoxDecoration(
+              //       gradient: LinearGradient(
+              //           colors: [
+              //             Colors.black.withOpacity(0.7),
+              //             Colors.black.withOpacity(0)
+              //           ],
+              //           begin: Alignment.topCenter,
+              //           end: Alignment.bottomCenter
+              //       )
+              //   ),
+              //   child: SafeArea(
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(16.0),
+              //       child: Column(
+              //         children: [
+              //           Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //             children: [
+              //               GestureDetector(
+              //                 onTap: (){
+              //                   Get.to(()=> const ProfileScreen());
+              //                 },
+              //                 child: Container(
+              //                   width: 10.w,
+              //                   height: 10.w,
+              //                   decoration: BoxDecoration(
+              //                     border: Border.all(color: Colors.white),
+              //                     borderRadius: BorderRadius.circular(10),
+              //                     color: Colors.transparent
+              //                   ),
+              //                   child: Center(child: SvgPicture.asset(profile),),
+              //                 ),
+              //               ),
+              //               GestureDetector(
+              //                 onTap: (){
+              //                   openReportBottomSheet(context, widget.article);
+              //                 },
+              //                 child: Container(
+              //                   width: 10.w,
+              //                   height: 10.w,
+              //                   decoration: BoxDecoration(
+              //                     border: Border.all(color: Colors.white),
+              //                     borderRadius: BorderRadius.circular(10),
+              //                     color: Colors.transparent
+              //                   ),
+              //                   child: const Center(child: Icon(Icons.more_vert),),
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //           SizedBox(height: 10.h,),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
               const Spacer(),
               Container(
                 width: 100.w,
                 constraints: BoxConstraints(
-                  minHeight: 50.h,
-                  maxHeight: 75.h
+                  minHeight: 30.h,
+                  maxHeight: 65.h
                 ),
                 alignment: Alignment.bottomCenter,
                 decoration: BoxDecoration(
@@ -201,35 +203,6 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                                     color: Colors.white.withOpacity(.5)
                                   ),
                                 ),
-                                // SizedBox(
-                                //   height: 10.h,
-                                //   child: Text(
-                                //     widget.article.articleContent.toString(),
-                                //     style: TextStyle(
-                                //       overflow: TextOverflow.ellipsis,
-                                //       fontSize: 14,
-                                //       color: Colors.white.withOpacity(0.5),
-                                //     ),
-                                //     maxLines: 3,
-                                //   ),
-                                // ),
-                                // Row(
-                                //   mainAxisAlignment: MainAxisAlignment.end,
-                                //   children: [
-                                //     GestureDetector(
-                                //       onTap: ()async{
-                                //         var url = Uri.parse(widget.article.articleUrl.toString());
-                                //         if (!await launchUrl(url)) {
-                                //           throw Exception('Could not launch $url');
-                                //         }
-                                //       },
-                                //       child: const Text("Read more",style:  TextStyle(
-                                //           overflow: TextOverflow.ellipsis,
-                                //           fontSize: 14, color: Colors.white),
-                                //       ),
-                                //     )
-                                //   ],
-                                // ),
                                 SizedBox(height: 2.h,),
                                 Center(
                                   child: RotatedBox(
@@ -277,19 +250,6 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // Row(
-                          //   children: [
-                          //     Text("${widget.article.source}",style: Get.textTheme.titleSmall!.copyWith(
-                          //       color: Colors.white.withOpacity(0.5)
-                          //     ),),
-                          //     Text(" | ",style: Get.textTheme.titleSmall!.copyWith(
-                          //         color: Colors.white.withOpacity(0.5)
-                          //     )),
-                          //     Text('$updateTimeAgo ago',style: Get.textTheme.titleSmall!.copyWith(
-                          //         color: Colors.white.withOpacity(0.5)
-                          //     ))
-                          //   ],
-                          // ),
 
                           Row(
                             children: [
@@ -308,6 +268,14 @@ class _ArticleDetailsState extends State<ArticleDetails> {
 
                           Row(
                             children: [
+
+                              GestureDetector(
+                                child: const Icon(Icons.more_vert,),
+                                onTap: (){
+                                  openReportBottomSheet(context, widget.article);
+                                },
+                              ),
+                              SizedBox(width: 5.w,),
                               Obx(() {
                                 if(bookmarkBool.value == false){
                                   return GestureDetector(
@@ -332,7 +300,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                                     child: CircleAvatar(
                                       radius: 5.w,
                                       backgroundColor: Colors.transparent,
-                                      child: const Icon(Icons.favorite_border_rounded),
+                                      child: const Icon(Icons.favorite_border_rounded,color: Colors.white,),
                                     ),);
                                 }else{
                                   return GestureDetector(
@@ -354,19 +322,16 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                                     ),);
                                 }
                               }),
-                              SizedBox(width: 5.w,),
+                              SizedBox(width: 7.w,),
                               GestureDetector(
                                 key: shareButtonKey,
                                 onTap: ()async{
 
                                   await generateAndSharePostLink(widget.article);
-
-                                  // await Share.share(
-                                  //     link.toString(),
-                                  //     subject: widget.article.articleTitle.toString()
-                                  // );
                                 },
-                                child: SvgPicture.asset(share),
+                                child: Transform.rotate(
+                                    angle: -pi/6,
+                                    child: const Icon(Icons.send)),
                               ),
                             ],
                           )
@@ -394,7 +359,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
         fit: BoxFit.cover,
       );
     }else{
-      log('video string : ${widget.article.video}');
+      dev.log('video string : ${widget.article.video}');
       return Positioned(
         top: 0,
         child: VideoPlayerWidget(videoUrl: widget.article.video.toString(),));
@@ -412,7 +377,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
     );
 
     var link = await FirebaseDynamicLinks.instance.buildLink(dynamicLinkParameters);
-    log("Link : ${link.toString()}");
+    dev.log("Link : ${link.toString()}");
 
     await ShareLink.shareUri(
       link,

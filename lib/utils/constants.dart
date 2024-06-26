@@ -17,6 +17,7 @@ import '../models/articles.dart';
 
 const String appIcon = 'assets/svg/icon_svg.svg';
 const String appLogo = 'assets/images/new icon.png';
+const String headrIcon = 'assets/images/h_icon.png';
 const String newSplash = 'assets/svg/new splash.svg';
 const String profile = 'assets/svg/profile.svg';
 const String bookmark = 'assets/svg/bookmark.svg';
@@ -31,6 +32,7 @@ const String onboarding4 = 'assets/images/o4.png';
 
 const String likeButton = 'assets/svg/Like (1).svg';
 const String likeFilledButton = 'assets/svg/Like Filled.svg';
+const String instaShare = 'assets/svg/insta_share.svg';
 
 /// Profile
 const String profileBackground = 'assets/svg/profile_background.svg';
@@ -171,31 +173,40 @@ void openSignUpBottomSheet(BuildContext context){
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
+                        Obx(() => GestureDetector(
                           onTap: () async{
-                            showLoadingAnimation(context);
-                            await ac.googleSignIn();
-                            // await GoogleSignIn().disconnect();
+
+                            // showLoadingAnimation(context);
+                            ac.signingLoader.value = true;
+
+                            await ac.googleSignIn().then((value) {
+                              ac.signingLoader.value = false;
+                            });
                           },
                           child: Container(
                             width: 70.w,
                             height: 6.h,
                             decoration: BoxDecoration(
-                              color: Get.theme.primaryColor,
-                              borderRadius: BorderRadius.circular(8)
+                                color: Get.theme.primaryColor,
+                                borderRadius: BorderRadius.circular(8)
                             ),
-                            child: Row(
+                            child: ac.signingLoader.value == false? Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SvgPicture.asset(googleIcon),
                                 SizedBox(width: 3.w,),
                                 Text("Sign up with Google",style: Get.textTheme.titleSmall!.copyWith(
-                                  fontWeight: FontWeight.bold
+                                    fontWeight: FontWeight.bold
                                 ),)
                               ],
-                            ),
+                            ): Center(
+                              child: SizedBox(
+                                width: 5.w,
+                                height: 5.w,
+                                child: const CircularProgressIndicator(color: Colors.white,strokeWidth: 2,),
+                              ),),
                           ),
-                        ),
+                        ),),
                         GestureDetector(
                           onTap: (){
                             Get.to(()=> const AdminLoginScreen());

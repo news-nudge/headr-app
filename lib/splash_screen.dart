@@ -29,10 +29,25 @@ class LogoWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.asset(appLogo,width: 20.w,height: 20.w,)),
-        SizedBox(height: 2.h,),
+        Container(
+          width: 20.w,
+          height: 20.w,
+          decoration: BoxDecoration(
+            color: Get.theme.primaryColor,
+            borderRadius: BorderRadius.circular(20)
+          ),
+          child: Center(
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(headrIcon,width: 17.w,height: 17.w,)),
+          ),
+        ),
+
+        // ClipRRect(
+        //     borderRadius: BorderRadius.circular(20),
+        //     child: Image.asset(headrIcon,width: 20.w,height: 20.w,)),
+
+        SizedBox(height: 1.h,),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -40,7 +55,7 @@ class LogoWidget extends StatelessWidget {
                 fontWeight: FontWeight.bold
             ),),
             Text("dr",style: Get.textTheme.titleLarge!.copyWith(
-              color: Get.theme.primaryColor,
+              color: Colors.white,
               fontWeight: FontWeight.bold
             ),)
           ],
