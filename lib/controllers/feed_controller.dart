@@ -16,6 +16,9 @@ class FeedController extends GetxController{
   RxList<Article> articles = RxList<Article>();
   RxList<Bookmark> bookmarks = RxList<Bookmark>();
 
+
+  RxBool isLikeAnimating = false.obs;
+
   int oldDocumentArticlesListLength = -1;
   int articlePaginationCount = 20;
   late DocumentSnapshot lastArticleDocument;

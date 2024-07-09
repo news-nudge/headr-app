@@ -52,7 +52,7 @@ class AuthController extends GetxController{
     ///If there is any change it will implement the given function
 
     // everAll([hasInternet,_user], _initializeApp);
-    ever(hasInternet,_handleInternet);
+    // ever(hasInternet,_handleInternet);
     ever(_user,_initializeApp);
 
   }
@@ -155,7 +155,7 @@ class AuthController extends GetxController{
               Get.back();
               log('Logged in via google sign in function');
               googleBool.value = false;
-              Get.to(()=> const HomeScreen());
+              Get.offAll(()=> const HomeScreen());
             });
           });
         }

@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:headr/controllers/profile_controller.dart';
 import 'package:headr/models/articles.dart';
@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
         preferredSize: Size(100.w, 40.h),
         child: Container(
           width: 100.w,
-          height: 11.h,
+          height: 10.h,
           alignment: Alignment.bottomLeft,
           decoration: const BoxDecoration(
             color: Colors.black
@@ -93,8 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                const Icon(Icons.menu,size: 28,color: Colors.white,),
-                SizedBox(width: 5.w,),
+                // SizedBox(width: 4.w,),
                 Text("Headr",style: Get.textTheme.titleLarge!.copyWith(
                     fontWeight: FontWeight.bold
                 ),),
