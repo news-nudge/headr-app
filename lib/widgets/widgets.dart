@@ -265,8 +265,8 @@ class BlackGradientContainer extends StatelessWidget {
             gradient: LinearGradient(
                 colors: [
                   Colors.black.withOpacity(0),
+                  Colors.black.withOpacity(0.8),
                   Colors.black.withOpacity(0.9),
-                  Colors.black.withOpacity(1),
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter
@@ -289,7 +289,7 @@ class BlackGradientContainer extends StatelessWidget {
                   Colors.black.withOpacity(0.7),
                   Colors.black.withOpacity(0.8),
                   Colors.black.withOpacity(0.9),
-                  Colors.black.withOpacity(1),
+                  // Colors.black.withOpacity(1),
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter
