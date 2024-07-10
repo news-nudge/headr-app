@@ -65,9 +65,9 @@ class _ArticleDetailsState extends State<ArticleDetails> {
       color: Get.theme.scaffoldBackgroundColor,
       child: GestureDetector(
         onDoubleTap: ()async{
-          fc.isLikeAnimating.value = true;
           if(bookmarkBool.value == false){
             if(ac.userExistence() == true){
+              fc.isLikeAnimating.value = true;
               await FirebaseFirestore.instance
                   .collection('users')
                   .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -85,6 +85,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
             }
           }else{
             if(ac.userExistence() == true){
+              fc.isLikeAnimating.value = true;
               await FirebaseFirestore.instance
                   .collection('users')
                   .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -194,6 +195,8 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                                       return GestureDetector(
                                         onTap: ()async{
                                           if(ac.userExistence() == true){
+                                            fc.isLikeAnimating.value = true;
+                                            bookmarkBool.value = true;
                                             await FirebaseFirestore.instance
                                                 .collection('users')
                                                 .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -205,7 +208,6 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                                               'source': widget.article.source.toString(),
                                               'timestamp': DateTime.now().millisecondsSinceEpoch,
                                             });
-                                            bookmarkBool.value = true;
                                           }else{
                                             openSignUpBottomSheet(context);
                                           }
@@ -219,12 +221,13 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                                       return GestureDetector(
                                         onTap: ()async{
                                           if(ac.userExistence() == true){
+                                            fc.isLikeAnimating.value = true;
+                                            bookmarkBool.value = false;
                                             await FirebaseFirestore.instance
                                                 .collection('users')
                                                 .doc(FirebaseAuth.instance.currentUser?.uid)
                                                 .collection('bookmarks')
                                                 .doc(widget.article.docId.toString()).delete();
-                                            bookmarkBool.value = false;
                                           }else{
                                             openSignUpBottomSheet(context);
                                           }},

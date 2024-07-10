@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   if(pc.currentUser.value == null){
                     return GestureDetector(
                       onTap: (){
-                        Get.to(()=> const ProfileScreen());
+                        Get.to(()=> const ProfileScreen(), transition: Transition.rightToLeft);
                       },
                       child: Container(
                         width: 8.w,
@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }else{
                     return GestureDetector(
                       onTap: (){
-                        Get.to(()=> const ProfileScreen());
+                        Get.to(()=> const ProfileScreen(), transition: Transition.rightToLeft);
                       },
                       child: CircleAvatar(
                         radius: 4.w,
