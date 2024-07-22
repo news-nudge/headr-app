@@ -9,7 +9,7 @@ class T1{
   static ThemeData darkTheme() {
     return ThemeData.dark(useMaterial3: true).copyWith(
       scaffoldBackgroundColor: const Color.fromRGBO(30, 31, 33, 1),
-      primaryColor: const Color.fromRGBO(82, 0, 255, 1),
+      primaryColor: const Color.fromRGBO(255, 255, 255, 1.0),
       cardColor: const Color.fromRGBO(255, 113, 35, 1),
       canvasColor: const Color.fromRGBO(254, 255, 255, 1),
       highlightColor: const Color(0xffb8bdc9),

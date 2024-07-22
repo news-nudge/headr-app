@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:headr/utils/constants.dart';
+import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -13,7 +14,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Get.theme.primaryColor,
-      body: Center(child: SvgPicture.asset(appIcon)),
+      body: Center(child: Lottie.asset(introAnimation)),
     );
   }
 }
@@ -22,9 +23,6 @@ class LogoWidget extends StatelessWidget {
   const LogoWidget({
     super.key,
   });
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,7 @@ class LogoWidget extends StatelessWidget {
           child: Center(
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.asset(headrIcon,width: 17.w,height: 17.w,)),
+                child: Image.asset(appIconWhite,width: 17.w,height: 17.w,)),
           ),
         ),
 

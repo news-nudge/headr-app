@@ -52,7 +52,7 @@ class _ExpectationScreenState extends State<ExpectationScreen> {
                       child: Center(
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(headrIcon,width: 7.w,height: 7.w,)),
+                            child: Image.asset(appIconWhite,width: 7.w,height: 7.w,)),
                       ),
                     ),
                     SizedBox(width: 3.w,),
@@ -97,7 +97,7 @@ class _ExpectationScreenState extends State<ExpectationScreen> {
                         backgroundColor: Get.theme.primaryColor,
                         borderStyle: BorderStyle.solid,
                         foregroundStyle: const TextStyle(
-                          color: Colors.white
+                          color: Colors.black
                         )
                       ),
                       color: Colors.transparent,

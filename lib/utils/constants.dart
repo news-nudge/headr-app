@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/articles.dart';
 
 const String appIcon = 'assets/svg/icon_svg.svg';
+const String appIconWhite = 'assets/images/headr_white.png';
 const String appLogo = 'assets/images/new icon.png';
 const String headrIcon = 'assets/images/h_icon.png';
 const String newSplash = 'assets/svg/new splash.svg';
@@ -50,6 +51,7 @@ const String logoutIcon = 'assets/svg/logout.svg';
 const String noInternet = 'assets/lottie/90478-disconnect.json';
 // const String loader = 'assets/lottie/news-nudge-loader.json';
 const String greenLoader = 'assets/lottie/green-loader.json';
+const String introAnimation = 'assets/lottie/intro.json';
 
 void showLoadingAnimation(BuildContext context) {
   showDialog(
@@ -196,14 +198,15 @@ void openSignUpBottomSheet(BuildContext context){
                                 SvgPicture.asset(googleIcon),
                                 SizedBox(width: 3.w,),
                                 Text("Sign up with Google",style: Get.textTheme.titleSmall!.copyWith(
-                                    fontWeight: FontWeight.bold
+                                    fontWeight: FontWeight.bold,
+                                  color: Colors.black
                                 ),)
                               ],
                             ): Center(
                               child: SizedBox(
                                 width: 5.w,
                                 height: 5.w,
-                                child: const CircularProgressIndicator(color: Colors.white,strokeWidth: 2,),
+                                child: const CircularProgressIndicator(color: Colors.black,strokeWidth: 2,),
                               ),),
                           ),
                         ),),
@@ -219,7 +222,7 @@ void openSignUpBottomSheet(BuildContext context){
                               border: Border.all(color: Get.theme.primaryColor),
                               borderRadius: BorderRadius.circular(8)
                             ),
-                            child: const Icon(Icons.settings,color: Colors.white,),),
+                            child: const Icon(Icons.settings,color: Colors.black,),),
                         )
                       ],
                     )
