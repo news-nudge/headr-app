@@ -31,7 +31,7 @@ dependencies:
   #Backend
   get: ^4.6.6
   firebase_core: ^2.14.0
-  firebase_auth: ^4.6.3
+  firebase_auth:
   cloud_firestore: ^4.8.1
   google_sign_in:
   geolocator:
@@ -95,7 +95,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/h_icon.png"
+  image_path: "assets/images/Headr White Icon.png"
 
 flutter:
 

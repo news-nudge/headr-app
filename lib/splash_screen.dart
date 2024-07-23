@@ -14,7 +14,19 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Get.theme.primaryColor,
-      body: Center(child: Lottie.asset(introAnimation)),
+      body: Center(child: Image.asset('assets/images/Headr White Icon.png',width: 25.h,height: 25.h,fit: BoxFit.cover,)),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("headr",style: Get.textTheme.headlineSmall!.copyWith(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),)
+          ],
+        ),
+      ),
     );
   }
 }

@@ -161,7 +161,7 @@ void openSignUpBottomSheet(BuildContext context){
                       ),
                     ),
                     SizedBox(height: 3.h,),
-                    SvgPicture.asset(loginIcon),
+                    SvgPicture.asset(loginIcon,color: Colors.white,),
                     SizedBox(height: 3.h,),
                     Text("Unlock Exclusive Features!",style: Get.textTheme.titleLarge,),
                     SizedBox(height: 2.h,),
