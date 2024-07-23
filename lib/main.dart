@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,9 +18,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,).then((value) {
-
+    log('entered 1');
     Get.put(FeedController());
 
+    log('entered 2');
     Future.delayed(const Duration(seconds: 2), () => Get.put(AuthController()));
   });
 

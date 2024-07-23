@@ -32,6 +32,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '708417576707',
     projectId: 'headr-81a9f',
     storageBucket: 'headr-81a9f.appspot.com',
+    authDomain: 'headr-81a9f.firebaseapp.com',
   );
 
   // static const FirebaseOptions ios = FirebaseOptions(

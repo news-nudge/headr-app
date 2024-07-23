@@ -29,20 +29,20 @@ class AuthController extends GetxController{
   RxBool signingLoader = false.obs;
 
   /// Internet
-  late StreamSubscription subscription;
-  RxBool hasInternet = false.obs;
+  // late StreamSubscription subscription;
+  // RxBool hasInternet = false.obs;
   RxBool googleBool = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    subscription = Connectivity().onConnectivityChanged.listen((event) {
-      if(event == ConnectivityResult.none){
-        hasInternet.value = false;
-      }else{
-        hasInternet.value = true;
-      }
-    });
+    // subscription = Connectivity().onConnectivityChanged.listen((event) {
+    //   if(event == ConnectivityResult.none){
+    //     hasInternet.value = false;
+    //   }else{
+    //     hasInternet.value = true;
+    //   }
+    // });
 
     _user = Rx<User?>(auth.currentUser);
     _user.bindStream(auth.userChanges());
@@ -59,18 +59,20 @@ class AuthController extends GetxController{
 
   _initializeApp(dynamic parameters) async {
 
+    log('entered 3');
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var prefsList = prefs.getStringList('feedPrefs');
-    if(hasInternet.value ==true) {
-      if(googleBool.value == false && prefsList!=null && prefsList.isNotEmpty ){
-        log('Logged in via initialize app');
-        Get.offAll(() => const HomeScreen());
-      }else{
-        if(googleBool.value == false){
-          Get.offAll(()=> const OnboardingScreen());
-        }
+
+    if(googleBool.value == false && prefsList!=null && prefsList.isNotEmpty ){
+      log('Logged in via initialize app');
+      Get.offAll(() => const HomeScreen());
+    }else{
+      if(googleBool.value == false){
+        Get.offAll(()=> const OnboardingScreen());
       }
     }
+
   }
 
   _handleInternet(bool? hasInternet) {
