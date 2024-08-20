@@ -6,7 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:headr/controllers/feed_controller.dart';
 import 'package:headr/splash_screen.dart';
+import 'package:headr/utils/constants.dart';
 import 'package:headr/utils/theme.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'controllers/auth_controller.dart';
@@ -27,6 +29,10 @@ void main() async {
 
 
 
+  /// Push notifications
+  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  OneSignal.initialize(oneSignalAppId);
+  OneSignal.Notifications.requestPermission(true);
 
   runApp(const MyApp());
 }

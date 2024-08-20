@@ -53,6 +53,10 @@ const String noInternet = 'assets/lottie/90478-disconnect.json';
 const String greenLoader = 'assets/lottie/green-loader.json';
 const String introAnimation = 'assets/lottie/intro.json';
 
+
+/// Strings
+const String oneSignalAppId = 'aadf907c-2ad2-48a5-a47b-7d19e67967e0';
+
 void showLoadingAnimation(BuildContext context) {
   showDialog(
     context: context,

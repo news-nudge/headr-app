@@ -5,7 +5,7 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+2
+version: 1.0.0+4
 
 environment:
   sdk: '>=3.1.2 <4.0.0'
@@ -37,6 +37,7 @@ dependencies:
   geolocator:
   geocoding:
   geocoder_plus: ^0.0.1
+  onesignal_flutter: ^5.2.3
 
   flutter_avif: ^2.1.1
   flutter_image_compress: ^2.1.0
