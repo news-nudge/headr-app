@@ -13,6 +13,7 @@ import 'package:headr/controllers/profile_controller.dart';
 import 'package:headr/models/articles.dart';
 import 'package:headr/ui/article_details.dart';
 import 'package:headr/ui/profile.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../controllers/feed_controller.dart';
@@ -36,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     pageController = PageController(initialPage: 0);
     initDynamicLinks(context);
+    handlePushNotificationParams();
     callPosition();
     super.initState();
   }
@@ -189,6 +191,23 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.back();
       Get.to(()=> ArticleDetails(article: article,callPagination: false,));
     }
+  }
+
+  void handlePushNotificationParams() {
+    OneSignal.Notifications.addClickListener((event) async{
+      log('NOTIFICATION CLICK LISTENER CALLED WITH EVENT: $event');
+
+      setState(() {
+        String message = "Clicked notification: \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
+        log(message);
+      });
+
+      log('push notification additional params : ${event.notification.additionalData}');
+
+      String articleDocId = event.notification.additionalData?['articleId'];
+      var article = await fc.fetchParticularArticle(articleDocId);
+      Get.to(()=> ArticleDetails(article: article, callPagination: false));
+    });
   }
 }
 
