@@ -20,8 +20,9 @@ class SplashScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("headr",style: Get.textTheme.headlineSmall!.copyWith(
+            Text("Headr",style: Get.textTheme.headlineSmall!.copyWith(
               color: Colors.black,
+              fontSize: 19,
               fontWeight: FontWeight.bold,
             ),)
           ],

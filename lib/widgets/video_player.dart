@@ -56,32 +56,6 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                     ),
                   ),
                 ),
-                // SizedBox(height: 2.h,),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       GestureDetector(
-                //         child: Container(
-                //           width: 10.w,
-                //           height: 10.w,
-                //           decoration: BoxDecoration(
-                //               shape: BoxShape.circle,
-                //               color: Colors.black.withOpacity(0.2),
-                //               border: Border.all(color: Get.theme.highlightColor.withOpacity(0.5))
-                //           ),
-                //           child: const Center(child: Icon(Icons.chevron_left_rounded,size: 25,),),
-                //         ),
-                //         onTap: () async{
-                //           await flickManager.flickVideoManager!.videoPlayerController!.dispose();
-                //           Get.back();
-                //         },
-                //       ),
-                //     ],
-                //   ),
-                //
-                // ),
               ],
             )
         ),

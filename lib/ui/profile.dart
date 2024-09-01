@@ -1,10 +1,10 @@
 
+import 'package:app_settings/app_settings.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:headr/controllers/auth_controller.dart';
 import 'package:headr/controllers/feed_controller.dart';
 import 'package:headr/controllers/profile_controller.dart';
@@ -12,11 +12,10 @@ import 'package:headr/ui/profile/bookmarks_screen.dart';
 import 'package:headr/ui/profile/feedback_screen.dart';
 import 'package:headr/ui/profile/interests_screen.dart';
 import 'package:headr/utils/constants.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../widgets/widgets.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -35,7 +34,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController feedbackController = TextEditingController();
   final FocusNode feedbackNode = FocusNode();
 
-  bool notificationBool = false;
+  late bool notificationBool;
+
+  @override
+  void initState() {
+    super.initState();
+    notificationBool = OneSignal.Notifications.permission;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,14 +164,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget buildNotificationSwitch(BuildContext context){
     return Switch.adaptive(
-      activeColor: Get.theme.primaryColor,
+      activeColor: Colors.green,
       inactiveTrackColor: const Color.fromRGBO(58, 59, 61, 1),
       value: notificationBool,
-      onChanged: (value){
+      onChanged: (value)async{
         if(ac.userExistence() == true){
-          setState(() {
-            notificationBool = !notificationBool;
-          });
+
+          if(notificationBool == false){
+            if(OneSignal.Notifications.permission == false){
+              await OneSignal.Notifications.requestPermission(true);
+              setState(() {
+                notificationBool = !notificationBool;
+              });
+            }
+          }else{
+            await AppSettings.openAppSettings(type: AppSettingsType.notification).then((value) {
+              if(OneSignal.Notifications.permission == false){
+                setState(() {
+                  notificationBool = !notificationBool;
+                });
+              }
+            });
+          }
+
         }else{
           openSignUpBottomSheet(context);
         }

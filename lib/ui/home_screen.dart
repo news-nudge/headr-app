@@ -3,12 +3,14 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chips_choice/chips_choice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:headr/controllers/auth_controller.dart';
 import 'package:headr/controllers/profile_controller.dart';
 import 'package:headr/models/articles.dart';
 import 'package:headr/ui/article_details.dart';
@@ -31,7 +33,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   late PageController pageController;
   final ProfileController pc = Get.put(ProfileController());
+  final AuthController ac = Get.find();
   final FeedController fc = Get.find();
+
+  final List<String> expectationChoices = [
+    'Breaking News','Politics','Technology','Education','Sports',
+    'Health','Business & Finance','Lifestyle','Travel','Food','Arts',
+    'Culture','Word News','AI','App development', 'Web dev', 'MMA',
+    'Constituency','Regional','Devotional'
+  ];
+
+  List<String> selectedChoices = [];
 
   @override
   void initState() {
@@ -79,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       extendBodyBehindAppBar: false,
       extendBody: false,
       appBar: PreferredSize(
@@ -95,9 +108,17 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // SizedBox(width: 4.w,),
+                Builder(builder: (context){
+                  return GestureDetector(
+                    onTap: (){
+                      Scaffold.of(context).openDrawer();
+                    },
+                    child: const Icon(Icons.menu,color: Colors.white,));
+                }),
+                SizedBox(width: 3.w,),
                 Text("Headr",style: Get.textTheme.titleLarge!.copyWith(
-                    fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                  fontSize: 19
                 ),),
                 const Spacer(),
                 Obx(() {
@@ -136,8 +157,57 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-
       ),
+      drawer: Container(
+          width: 70.w,
+          decoration: BoxDecoration(
+            color: Get.theme.scaffoldBackgroundColor,
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(3.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 10.h,),
+                Center(child: Image.asset('assets/images/Headr White Icon.png',width: 30.w,)),
+
+
+                SizedBox(height: 5.h,),
+
+                ChipsChoice.multiple(
+                  padding: EdgeInsets.zero,
+                  wrapped: true,
+                  value: selectedChoices,
+                  onChanged: (value) async {
+                    setState(() {
+                      selectedChoices = value;
+                      ac.feedPreferences.value = value;
+                    });
+                  },
+                  choiceItems: C2Choice.listFrom<String, String>(
+                      source: expectationChoices,
+                      value: (i, v) => v,
+                      label: (i, v) => v),
+                  choiceCheckmark: false,
+                  choiceStyle: C2ChipStyle.filled(
+                      selectedStyle: C2ChipStyle(
+                          backgroundColor: Get.theme.primaryColor,
+                          borderStyle: BorderStyle.solid,
+                          foregroundStyle: const TextStyle(
+                              color: Colors.black
+                          )
+                      ),
+                      color: Colors.transparent,
+                      borderWidth: 1,
+                      borderOpacity: 1,
+                      iconColor: Colors.white,
+                      borderStyle: BorderStyle.solid,
+                      borderRadius: BorderRadius.circular(5)),
+                )
+              ],
+            ),
+          ),
+        ),
       body: Obx(() {
         return PageView.builder(
           controller: pageController,

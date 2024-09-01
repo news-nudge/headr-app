@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:headr/models/articles.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/bookmark.dart';
@@ -51,8 +52,20 @@ class FeedController extends GetxController{
           return result;
         });
 
-    log('Articles length: ${res.length}');
-    return res;
+    var date = DateTime.now();
+    var today = DateTime(date.year,date.month,date.day).millisecondsSinceEpoch~/1000;
+    log('today value : $today');
+    log('today formatted value : ${DateTime.fromMillisecondsSinceEpoch(today)}');
+
+    var todayList = res.where((element) => element.uploadedAt! >= today).toList();
+    todayList.shuffle();
+
+    var remainingList = res.where((element) => element.uploadedAt! < today).toList();
+
+    List<Article> finalList = todayList + remainingList;
+
+    return finalList;
+    // return res;
   }
 
   Future<List<Article>> fetchMoreArticles() async{
